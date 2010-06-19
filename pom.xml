@@ -92,8 +92,10 @@
     </dependency>
     <dependency>
       <groupId>org.scala-tools.testing</groupId>
-      <artifactId>specs_2.8.0.Beta1</artifactId>
-      <version>1.6.4</version>
+      <artifactId>specs_2.8.0.RC6</artifactId>
+      <version>1.6.5-SNAPSHOT</version>
+      <!-- <artifactId>specs_2.8.0.Beta1</artifactId>
+      <version>1.6.4</version> -->
       <scope>test</scope>
     </dependency>
 	<dependency>
