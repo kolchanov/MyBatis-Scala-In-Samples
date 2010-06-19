@@ -103,98 +103,96 @@ class AuthorCRUDSpec extends HtmlSpecification with Textile with LogHelper {
 		}				
 	}
 	
+	DAO object should <ex> implement lazy Read method for Author class</ex>{
+		eg {
+			// lets' create an authorlist
+			val authorList  = List (Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(1) , "SpetialFirstName1", "lastName1", "annotation2", bookList),
+			Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(2) , "SpetialFirstName2", "lastName2", "annotation2", bookList),
+			Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(3) , "SpetialFirstName3", "lastName3", "annotation3", bookList))
+			// and save this one
+			authorList.foreach (MyBatisDaoService.saveAuthor (_))			
 
-	
+			// load saved list from database
+			val resList = MyBatisDaoService.lazyLoadAuthorByFirstName("SpetialFirstName%")
 
+			resList.size must_== authorList.size			
+			Author(resList.head) must_== authorList.head
+
+		}																			
+	}	
+
+		DAO object should <ex> implement Update method for Author class. This method must 
+		<ul>
+			<li>update author master record</li> 
+			<li>delete books that does't exists in the new author object</li>
+			<li>insert books that does't exists in the old author object</li>
+			<li>update that do exists and has been changed</li>
+		</ul></ex>{
+			eg {
+				val oldBooks = bookList
+
+				// create an author
+				val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", oldBooks)																	
+				MyBatisDaoService.saveAuthor (author1)
+
+				// create an updated author
+				// newBooks list - one element from old list, one updated book and a new book
+				val newBooks = Book (oldBooks.last.bookId, "TTL4 updated" , "ISBN4 updated", genreArray(0)) ::
+					Book (BookH2IdGenerator.nextVal, "Some title" , "Some ISBN", genreArray(0), author1) ::
+					oldBooks.take(1) 
+				val author2 = Author (author1.authorId, new DateTime().minusYears(11) , "firstName2", "lastName2", "annotation2", newBooks)
+
+				MyBatisDaoService.updateAuthor (author2)			
+
+				val author3 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))
+				author3 must_!= None
+				author3.foreach { a =>  // Option is a monad
+					a.firstName must_== "firstName2"
+					a.books.size must_== 3
+					a.books.filter (b=> b.title == "TTL4 updated").size must_== 1
+					a.books.filter (b=> b.isbn == "Some ISBN").size must_== 1
+					a.books.filter (b=> b.isbn == oldBooks.head.isbn).size must_== 1
+				}			
+			}		
+		}	
+
+		DAO object should <ex> implement Delete cascade method for Author class (delete master and slave records)</ex>{
+			val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", bookList)																	
+			MyBatisDaoService.saveAuthor (author1)
+
+			MyBatisDaoService.deleteCascadeAuthor (author1)				
+
+			val author3 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))				
+			author3 must_== None
+		}
+
+		DAO object should <ex> implement Delete restrict method for Author class (delete master only when slave book does not exists)</ex>{
+			eg{
+				val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", bookList)																	
+				MyBatisDaoService.saveAuthor (author1)
+
+				MyBatisDaoService.deleteAuthor (author1) must throwA[Exception]		
+
+				val author2 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))				
+				lzDebug ("delete author1: "+Some(author1))
+				lzDebug ("delete author2: "+author2)
+
+				author2 must_!= None
+				author2 must_== Some(author1)
+
+				val author3 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName3", "lastName3", "annotation3", List())																	
+				MyBatisDaoService.saveAuthor (author3)			
+				MyBatisDaoService.deleteAuthor (author3) 
+
+				val author4 = Author.authorOption(MyBatisDaoService.loadAuthorById (author3.authorId))
+				lzDebug ("delete author4: "+author4)
+
+				author4 must_== None
+			}
+		}
 			
 	</textile>
 }
 
 	
-// DAO object should <ex> implement lazy Read method for Author class</ex>{
-// 	eg {
-// 		// lets' create an authorlist
-// 		val authorList  = List (Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(1) , "SpetialFirstName1", "lastName1", "annotation2", bookList),
-// 		Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(2) , "SpetialFirstName2", "lastName2", "annotation2", bookList),
-// 		Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(3) , "SpetialFirstName3", "lastName3", "annotation3", bookList))
-// 		// and save this one
-// 		authorList.foreach (MyBatisDaoService.saveAuthor (_))			
-// 		
-// 		// load saved list from database
-// 		val resList = MyBatisDaoService.lazyLoadAuthorByFirstName("SpetialFirstName%")
-// 		
-// 		resList.size must_== authorList.size			
-// 		Author(resList.head) must_== authorList.head
-// 		
-// 	}																			
-// }	
-	
-	// DAO object should <ex> implement Update method for Author class. This method must 
-	// <ul>
-	// 	<li>update author master record</li> 
-	// 	<li>delete books that does't exists in the new author object</li>
-	// 	<li>insert books that does't exists in the old author object</li>
-	// 	<li>update that do exists and has been changed</li>
-	// </ul></ex>{
-	// 	eg {
-	// 		val oldBooks = bookList
-	// 
-	// 		// create an author
-	// 		val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", oldBooks)																	
-	// 		MyBatisDaoService.saveAuthor (author1)
-	// 
-	// 		// create an updated author
-	// 		// newBooks list - one element from old list, one updated book and a new book
-	// 		val newBooks = Book (oldBooks.last.bookId, "TTL4 updated" , "ISBN4 updated", genreArray(0)) ::
-	// 			Book (BookH2IdGenerator.nextVal, "Some title" , "Some ISBN", genreArray(0), author1) ::
-	// 			oldBooks.take(1) 
-	// 		val author2 = Author (author1.authorId, new DateTime().minusYears(11) , "firstName2", "lastName2", "annotation2", newBooks)
-	// 
-	// 		MyBatisDaoService.updateAuthor (author2)			
-	// 		
-	// 		val author3 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))
-	// 		author3 must_!= None
-	// 		author3.foreach { a =>  // Option is a monad
-	// 			a.firstName must_== "firstName2"
-	// 			a.books.size must_== 3
-	// 			a.books.filter (b=> b.title == "TTL4 updated").size must_== 1
-	// 			a.books.filter (b=> b.isbn == "Some ISBN").size must_== 1
-	// 			a.books.filter (b=> b.isbn == oldBooks.head.isbn).size must_== 1
-	// 		}			
-	// 	}		
-	// }	
-	// 
-	// DAO object should <ex> implement Delete cascade method for Author class (delete master and slave records)</ex>{
-	// 	val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", bookList)																	
-	// 	MyBatisDaoService.saveAuthor (author1)
-	// 						
-	// 	MyBatisDaoService.deleteCascadeAuthor (author1)				
-	// 	
-	// 	val author3 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))				
-	// 	author3 must_== None
-	// }
-	// 
-	// DAO object should <ex> implement Delete restrict method for Author class (delete master only when slave book does not exists)</ex>{
-	// 	eg{
-	// 		val author1 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName1", "lastName1", "annotation1", bookList)																	
-	// 		MyBatisDaoService.saveAuthor (author1)
-	// 
-	// 		MyBatisDaoService.deleteAuthor (author1) must throwA[Exception]		
-	// 
-	// 		val author2 = Author.authorOption(MyBatisDaoService.loadAuthorById (author1.authorId))				
-	// 		lzDebug ("delete author1: "+Some(author1))
-	// 		lzDebug ("delete author2: "+author2)
-	// 		
-	// 		author2 must_!= None
-	// 		author2 must_== Some(author1)
-	// 		
-	// 		val author3 = Author (AuthorH2IdGenerator.nextVal, new DateTime().minusYears(10) , "firstName3", "lastName3", "annotation3", List())																	
-	// 		MyBatisDaoService.saveAuthor (author3)			
-	// 		MyBatisDaoService.deleteAuthor (author3) 
-	// 
-	// 		val author4 = Author.authorOption(MyBatisDaoService.loadAuthorById (author3.authorId))
-	// 		lzDebug ("delete author4: "+author4)
-	// 		
-	// 		author4 must_== None
-	// 	}
-	// }
+

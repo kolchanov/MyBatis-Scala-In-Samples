@@ -23,17 +23,19 @@
 			DELETE AUTHOR WHERE AUTHOR_ID = #{authorId}
 	</delete>
 	
+	<!-- column="AUTHOR_ID" -->
+	
 	<resultMap id="authorResult" type="AuthorRecord">
 		<id property="authorId" column="AUTHOR_ID"/> 
 	  <result property="birthDay" column="BIRTH_DAY" jdbcType="DATE"/>
 	  <result property="firstName" column="FIRST_NAME"/>
 	  <result property="lastName" column="LAST_NAME"/>
 	  <result property="annotation" column="ANNOTATION"/>		
-		<collection property="books" column="AUTHOR_ID" javaType="BookRecord">
+		<collection property="books"  javaType="BookRecord">
 		  <id property="bookId" column="BOOK_ID"/> 
 		  <result property="title" column="TITLE"/>	
 		  <result property="isbn" column="ISBN"/>				
-			<result property="authorId" column="AUTHOR_ID" jdbcType="NUMERIC" typeHandler="org.mybatis_scala.service.mybatis.OptionLongTypeHandler"/>				
+			<result property="authorId" column="BOOK_AUTHOR_ID" jdbcType="NUMERIC" typeHandler="org.mybatis_scala.service.mybatis.OptionLongTypeHandler"/>							
 			<association property="genre" column="GENRE_ID" javaType="Genre"> 
 				<constructor> 
 					<idArg column="GENRE_ID" javaType="_long"/>  
@@ -45,7 +47,7 @@
 	
 	<select id="selectAuthorById" parameterType="Long" resultMap="authorResult">
 			SELECT AUTHOR.AUTHOR_ID, AUTHOR.BIRTH_DAY, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME, AUTHOR.ANNOTATION,
-		 	BOOK.BOOK_ID, BOOK.TITLE, BOOK.ISBN, BOOK.GENRE_ID, GENRE.NAME AS GENRE_NAME
+		 	BOOK.AUTHOR_ID AS BOOK_AUTHOR_ID, BOOK.BOOK_ID, BOOK.TITLE, BOOK.ISBN, BOOK.GENRE_ID, GENRE.NAME AS GENRE_NAME
 			FROM AUTHOR
 			LEFT JOIN BOOK ON AUTHOR.AUTHOR_ID = BOOK.AUTHOR_ID
 			LEFT JOIN GENRE ON GENRE.GENRE_ID = BOOK.GENRE_ID

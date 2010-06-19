@@ -70,8 +70,8 @@ object Author extends LogHelper{
 		lzDebug ("convertBookList authorId: "+authorId+" books: "+books)
 		if (books == null) return List()
 		val buffer : Buffer[BookRecord] = books
-		// buffer.filter( b => b.bookId > 0).map (br => Book(br,authorId)).toList
-		buffer.map (br => Book(br,authorId)).toList
+		buffer.filter( b => b.bookId > 0).map (br => Book(br,authorId)).toList
+		// buffer.map (br => Book(br,authorId)).toList
 	}	
 	
 	def authorOption (authorRecord : Option[AuthorRecord]): Option [Author] = if (authorRecord.isDefined) Some (apply(authorRecord.get)) else None

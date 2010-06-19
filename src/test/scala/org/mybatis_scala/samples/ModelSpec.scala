@@ -213,6 +213,7 @@ class ModelSpec extends HtmlSpecification with Textile with LogHelper{
 		val g1 = predefinedGenre1
 
 		val b1 = new BookRecord 
+		b1.bookId = 1
 		b1.title = "Title1"
 		b1.isbn = "isbn1"
 		b1.genre = g1
@@ -223,6 +224,7 @@ class ModelSpec extends HtmlSpecification with Textile with LogHelper{
 		val g2 = predefinedGenre2
 
 		val b2 = new BookRecord 
+		b2.bookId = 2
 		b2.title = "Title1"
 		b2.isbn = "isbn1"
 		b2.genre = g2

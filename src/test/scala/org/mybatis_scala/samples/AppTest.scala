@@ -15,9 +15,9 @@ class AppTest {
 	def printSpecs  {
 
 		(new ModelSpec).reportSpecs
-		//(new IDGeneratorSpec).reportSpecs
-		// (new GenreCRUDSpec).reportSpecs		
-		// (new BookCRUDSpec).reportSpecs
+		(new IDGeneratorSpec).reportSpecs
+		(new GenreCRUDSpec).reportSpecs		
+		(new BookCRUDSpec).reportSpecs
 		(new AuthorCRUDSpec).reportSpecs						
 	}
 	
