@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="Genre">
+	
+	<select id="countGenre" resultType="Int">
+		select count(*) from GENRE
+	</select> 
+	
+	
+	<insert id="insertGenre" parameterType="Genre"> 
+	    INSERT INTO GENRE (GENRE_ID, NAME) 
+	    values (#{genreId},#{name}) 
+	</insert>
+	
+	<update id="updateGenre" parameterType="Genre"> 
+	    UPDATE GENRE SET NAME = #{name}
+		WHERE GENRE_ID = #{genreId}
+	</update>	
+	
+	<delete id="deleteGenre" parameterType="Genre"> 
+	    DELETE GENRE
+		WHERE GENRE_ID = #{genreId}
+	</delete>	
+	
+	<resultMap id="genreResult" type="Genre">
+		<constructor> 
+			<!-- this is _long not long or Long java type-->
+			<idArg column="GENRE_ID" javaType="_long"/>  
+			<arg column="NAME" javaType="java.lang.String"/> 
+		</constructor> 		
+	</resultMap>
+	
+	<select id="selectGenreById" parameterType="Long" resultMap="genreResult">
+		SELECT GENRE_ID, NAME FROM GENRE WHERE GENRE_ID = #{id}
+	</select>
+
+	<select id="selectGenreByName" parameterType="Long" resultMap="genreResult">
+		SELECT GENRE_ID, NAME FROM GENRE WHERE NAME LIKE #{name}
+	</select>
+
+	<resultMap id="genreRecordResult" type="GenreRecord">
+	  <id property="genreId" column="GENRE_ID"/> 
+	  <result property="name" column="NAME"/>		
+	</resultMap>
+
+	
+	<select id="selectGenreRecordById" parameterType="Long" resultMap="genreRecordResult">
+		SELECT GENRE_ID, NAME FROM GENRE WHERE GENRE_ID = #{id}
+	</select>	
+	
+</mapper>

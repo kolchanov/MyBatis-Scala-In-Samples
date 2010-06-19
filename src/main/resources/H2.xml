@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="H2">  
+  <select id="selectSequenceIncrement" parameterType="String" resultType="Integer">  
+    select INCREMENT from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_NAME = #{name}  
+  </select>  
+
+  <select id="genreNextVal" resultType="Long">  
+    SELECT NEXT VALUE FOR GENRE_SEQUENCE
+  </select>  
+
+  <select id="bookNextVal" resultType="Long">  
+    SELECT NEXT VALUE FOR BOOK_SEQUENCE
+  </select>
+
+  <select id="authorNextVal" resultType="Long">  
+    SELECT NEXT VALUE FOR AUTHOR_SEQUENCE
+  </select>
+</mapper> 

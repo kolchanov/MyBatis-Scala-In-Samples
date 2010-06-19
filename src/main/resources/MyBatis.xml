@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration> 
+	<settings>
+		<setting name="lazyLoadingEnabled" value="true"/> 
+	</settings>
+	<typeAliases> 
+	  <typeAlias alias="Genre" type="org.mybatis_scala.model.Genre"/>
+	  <typeAlias alias="GenreRecord" type="org.mybatis_scala.model.GenreRecord"/>	 
+	  <typeAlias alias="Book" type="org.mybatis_scala.model.Book"/> 
+	  <typeAlias alias="BookRecord" type="org.mybatis_scala.model.BookRecord"/> 	
+	  <typeAlias alias="AbstractAuthor" type="org.mybatis_scala.model.AbstractAuthor"/> 		
+	  <typeAlias alias="Author" type="org.mybatis_scala.model.Author"/> 	
+	  <typeAlias alias="AuthorRecord" type="org.mybatis_scala.model.AuthorRecord"/> 		
+	</typeAliases>	
+	<typeHandlers> 
+		<typeHandler javaType="org.joda.time.DateTime" jdbcType="DATE" 	handler="org.mybatis_scala.service.mybatis.JodaTimeTypeHandler"/>
+	</typeHandlers>	
+  <environments default="development"> 
+      <environment id="development"> 
+      <transactionManager type="JDBC"/> 
+      <dataSource type="POOLED"> 
+        <property name="driver" value="${driver}"/> 
+        <property name="url" value="${url}"/> 
+        <property name="username" value="${username}"/> 
+        <property name="password" value="${password}"/> 
+      </dataSource> 
+    </environment> 
+  </environments> 
+  <mappers> 
+    <mapper resource="H2.xml"/> 
+    <mapper resource="Genre.xml"/>
+    <mapper resource="Book.xml"/> 
+    <mapper resource="Author.xml"/> 
+  </mappers> 
+</configuration>

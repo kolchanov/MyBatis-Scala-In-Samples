@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="Author">
+	<select id="countAuthor" resultType="Int">
+		SELECT COUNT(*) FROM AUTHOR
+	</select>
+	
+	<insert id="insertAuthor" parameterType="AbstractAuthor"> 
+	    INSERT INTO AUTHOR (AUTHOR_ID, BIRTH_DAY, FIRST_NAME, LAST_NAME, ANNOTATION) 
+	    values (#{authorId},#{birthDay,jdbcType=DATE}, #{firstName}, #{lastName}, #{annotation}) 
+	</insert>
+	
+	<update id="updateAuthor" parameterType="Author"> 
+	    UPDATE AUTHOR SET
+			BIRTH_DAY = #{birthDay,jdbcType=DATE}, 
+			FIRST_NAME = #{firstName}, 
+			LAST_NAME = #{lastName},
+			ANNOTATION = #{annotation}
+	    WHERE AUTHOR_ID = #{authorId}
+	</update>	
+	
+	<delete id="deleteAuthor" parameterType="Author"> 
+			DELETE AUTHOR WHERE AUTHOR_ID = #{authorId}
+	</delete>
+	
+	<resultMap id="authorResult" type="AuthorRecord">
+		<id property="authorId" column="AUTHOR_ID"/> 
+	  <result property="birthDay" column="BIRTH_DAY" jdbcType="DATE"/>
+	  <result property="firstName" column="FIRST_NAME"/>
+	  <result property="lastName" column="LAST_NAME"/>
+	  <result property="annotation" column="ANNOTATION"/>		
+		<collection property="books" column="AUTHOR_ID" javaType="BookRecord">
+		  <id property="bookId" column="BOOK_ID"/> 
+		  <result property="title" column="TITLE"/>	
+		  <result property="isbn" column="ISBN"/>				
+			<result property="authorId" column="AUTHOR_ID" jdbcType="NUMERIC" typeHandler="org.mybatis_scala.service.mybatis.OptionLongTypeHandler"/>				
+			<association property="genre" column="GENRE_ID" javaType="Genre"> 
+				<constructor> 
+					<idArg column="GENRE_ID" javaType="_long"/>  
+					<arg column="GENRE_NAME" javaType="java.lang.String"/> 
+				</constructor>			
+			</association>			
+		</collection>
+	</resultMap>
+	
+	<select id="selectAuthorById" parameterType="Long" resultMap="authorResult">
+			SELECT AUTHOR.AUTHOR_ID, AUTHOR.BIRTH_DAY, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME, AUTHOR.ANNOTATION,
+		 	BOOK.BOOK_ID, BOOK.TITLE, BOOK.ISBN, BOOK.GENRE_ID, GENRE.NAME AS GENRE_NAME
+			FROM AUTHOR
+			LEFT JOIN BOOK ON AUTHOR.AUTHOR_ID = BOOK.AUTHOR_ID
+			LEFT JOIN GENRE ON GENRE.GENRE_ID = BOOK.GENRE_ID
+			WHERE AUTHOR.AUTHOR_ID = #{authorId}
+	</select>
+	
+	
+
+	
+	<resultMap id="lazyAuthorResult" type="AuthorRecord">
+		<id property="authorId" column="AUTHOR_ID"/> 
+	  <result property="birthDay" column="BIRTH_DAY" jdbcType="DATE"/>
+	  <result property="firstName" column="FIRST_NAME"/>
+	  <result property="lastName" column="LAST_NAME"/>
+	  <result property="annotation" column="ANNOTATION"/>		
+		<collection property="books" column="AUTHOR_ID"  select="selectBookByAuthorId"/>
+	</resultMap>	
+	
+	<select id="lazySelectAuthorByFirstName" parameterType="Long" resultMap="lazyAuthorResult">
+			SELECT AUTHOR.AUTHOR_ID, AUTHOR.BIRTH_DAY, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME, AUTHOR.ANNOTATION
+			FROM AUTHOR
+			WHERE AUTHOR.FIRST_NAME like #{firstName}
+	</select>
+	
+	<select id="selectBookByAuthorId" parameterType="Long" resultMap="bookResult">
+			SELECT BOOK_ID, TITLE, ISBN, BOOK.AUTHOR_ID, BOOK.GENRE_ID, GENRE.NAME AS GENRE_NAME FROM BOOK 
+			LEFT JOIN GENRE ON GENRE.GENRE_ID = BOOK.GENRE_ID
+			WHERE AUTHOR_ID = #{authorId}			
+	</select>	
+</mapper>

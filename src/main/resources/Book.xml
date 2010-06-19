@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="Book">
+	
+	<select id="countBook" resultType="Int">
+		select count(*) from Book
+	</select>
+	
+	<insert id="insertBook" parameterType="Book"> 
+	    INSERT INTO BOOK (BOOK_ID, TITLE, ISBN, GENRE_ID, AUTHOR_ID) 
+	    values (#{bookId}, #{title}, #{isbn}, #{genre.genreId}, #{authorId,jdbcType=NUMERIC,typeHandler=org.mybatis_scala.service.mybatis.OptionLongTypeHandler}) 
+	</insert>
+	
+	<update id="updateBook" parameterType="Book"> 
+	    UPDATE BOOK SET
+			TITLE = #{title}, 
+			ISBN = #{isbn}, 
+			GENRE_ID = #{genre.genreId},
+			AUTHOR_ID = #{authorId,jdbcType=NUMERIC,typeHandler=org.mybatis_scala.service.mybatis.OptionLongTypeHandler}
+	    WHERE BOOK_ID = #{bookId}
+	</update>	
+	
+	<delete id="deleteBook" parameterType="Book"> 
+			DELETE BOOK WHERE BOOK_ID = #{bookId}
+	</delete>
+	
+	<delete id="deleteBookById" parameterType="Long"> 
+			DELETE BOOK WHERE BOOK_ID = #{bookId}
+	</delete>	
+	
+	<delete id="deleteBookByAuthor" parameterType="Author"> 
+			DELETE BOOK WHERE AUTHOR_ID = #{authorId}
+	</delete>
+		
+	<resultMap id="genreResult" type="Genre">
+		<constructor> 
+			<!-- this is _long not long or Long java type-->
+			<idArg column="GENRE_ID" javaType="_long"/>  
+			<arg column="NAME" javaType="java.lang.String"/> 
+		</constructor> 		
+	</resultMap>
+	
+	<resultMap id="bookResult" type="BookRecord">
+	  <id property="bookId" column="BOOK_ID"/> 
+	  <result property="title" column="TITLE"/>	
+	  <result property="isbn" column="ISBN"/>				
+		<result property="authorId" column="AUTHOR_ID"/>				
+		<association property="genre" column="GENRE_ID" javaType="Genre"> 
+			<constructor> 
+				<idArg column="GENRE_ID" javaType="_long"/>  
+				<arg column="GENRE_NAME" javaType="java.lang.String"/> 
+			</constructor>			
+		</association>		
+	</resultMap>	
+	
+	<select id="selectBookById" parameterType="Long" resultMap="bookResult">
+			SELECT BOOK_ID, TITLE, ISBN, BOOK.AUTHOR_ID, BOOK.GENRE_ID, GENRE.NAME AS GENRE_NAME FROM BOOK 
+			LEFT JOIN GENRE ON GENRE.GENRE_ID = BOOK.GENRE_ID
+			WHERE BOOK_ID = #{bookId}			
+	</select>
+
+
+	<resultMap id="lazyBookResult" type="BookRecord">
+	  <id property="bookId" column="BOOK_ID"/> 
+	  <result property="title" column="TITLE"/>	
+	  <result property="isbn" column="ISBN"/>	
+		<result property="authorId" column="AUTHOR_ID" jdbcType="NUMERIC" typeHandler="org.mybatis_scala.service.mybatis.OptionLongTypeHandler"/>			
+		<association property="genre" column="GENRE_ID" javaType="Genre" select="selectGenreById"/> 
+	</resultMap>	
+
+
+	<select id="lazySelectBookByTitle" parameterType="String" resultMap="lazyBookResult">
+			SELECT BOOK_ID, TITLE, ISBN, GENRE_ID FROM BOOK 
+			WHERE TITLE like #{title}	
+	</select>
+
+	<select id="selectBookByAuthor" parameterType="Long" resultMap="lazyBookResult">
+			SELECT BOOK_ID, TITLE, ISBN, GENRE_ID, AUTHOR_ID FROM BOOK 
+			WHERE AUTHOR_ID = #{authorId}
+	</select>
+
+</mapper>
