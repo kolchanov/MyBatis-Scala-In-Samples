@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>MyBatis Scala in Samples</title>
+
+    <link href="./css/prettify.css" rel="stylesheet" type="text/css"></link>
+    <link href="./css/print.css" type="text/css" rel="stylesheet" media="print"></link>
+    <link href="./css/tooltip.css" type="text/css" rel="stylesheet"></link>		
+		<link href="./css/tabber.css" type="text/css" rel="stylesheet" media="screen"></link> 		
+	</head>
+	<body>
+		
+
+	 
+		<h2>About</h2>
+		<p><i>MyBatis Scala in Samples</i> is just a set of working <a href="http://www.mybatis.org/">MyBatis</a> samples with <a href="http://www.scala-lang.org">Scala</a> program language.</p>
+		<p>It is not a libarary, manual or template for new project. It is just a set of samples and nothing else and I hope it could be usefull to somebody. Something is wrong, something is good in this project. Please fell free to report any bug (especially in my English).</p>
+		<h2>How to build</h2>			
+			<p>To build <i>MyBatis Scala in Samples</i> with <a href="http://code.google.com/p/simple-build-tool/">sbt</a> call "sbt test" and open index.html.</p>		
+		<h2>Project Information</h2>
+			<p>All samples are built around three entities: Genre, Book and Author.</p>
+			<h3>Database Tables</h3>
+			<p>
+				<img src="src/main/resources/Database.png" width="400" border="0"/>
+			</p>
+			<h3>Domain Model</h3>
+				<p>
+					<img src="src/main/resources/GenreUML.png" width="400" border="0"/>
+				</p>
+				<p>
+					<img src="src/main/resources/BookUML.png" width="700" border="0"/>
+				</p>
+				<p>
+					<img src="src/main/resources/AuthorUML.png" width="900" border="0"/>				
+				</p>
+				<p>
+					<img src="src/main/resources/ModelUML.png" width="700" border="0"/>				
+				</p>				
+			<h3>Service Layer</h3>
+				TBD
+			<h3>Tests</h3>
+			<ul>
+					<li><a href="./org.mybatis_scala.samples.ModelSpec.html">ModelSpec</a></li>
+					<li><a href="./org.mybatis_scala.samples.IDGeneratorSpec.html">IDGeneratorSpec</a></li>
+					<li><a href="./org.mybatis_scala.samples.GenreCRUDSpec.html">GenreCRUDSpec</a></li>					
+					<li><a href="./org.mybatis_scala.samples.BookCRUDSpec.html">BookCRUDSpec</a></li>										
+					<li><a href="./org.mybatis_scala.samples.AuthorCRUDSpec.html">AuthorCRUDSpec</a></li>										
+			</ul>
+		<p>TBD</p>
+		<h2>Known Limitations</h2>
+		<ul>
+			<li><a href="http://code.google.com/p/mybatis/issues/detail?can=7&q=11&colspec=ID%20Type%20Component%20Status%20Priority%20Version%20Target%20Summary%20Reporter&id=11">Immutable POJO fails to load when lazyLoading is enabled</a>
+				<br/>Have to have protected constructor for class Genre. Waiting for MyBatis 3.0.2.
+			</li>
+			<li> Something is wrong null collection.
+		</ul>	
+		<h2>License</h2>
+			<p>Apache License Version 2.0</p>
+		
+	</body>
+</html>

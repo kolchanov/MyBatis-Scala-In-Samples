@@ -1,0 +1,35 @@
+digraph GenreUml {
+	fontname  = "Courier"
+
+
+
+
+	node [ 
+		fontname  = "Courier"
+		shape = "record"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]	
+
+	subgraph clusterGenre {
+		label = "Package org.mybatis_scala.model"		
+		labeljust = "l"
+	
+		AbstractGenre [
+			label = "{\<\<Trait\>\>\nAbstractGenre|  | + genreId: Long\l+ name: String\l}"
+		]
+
+		GenreRecord [
+			label = "{\<\<Mutable\>\>\nGenreRecord| + var genreId: Long\l+ var name: String\l|+ toString: String\l+ equals(Any): Boolean\l }"
+		]
+
+		Genre [
+			label = "{\<\<Immutable\>\>\nGenre| + val genreId: Long\l+ val name: String\l|+ Genre(Long,String)\l+ this()\l+ this(GenreRecord)\l+ toString: String\l+ equals(Any): Boolean\l }"
+		]
+
+		GenreRecord -> AbstractGenre
+		Genre -> AbstractGenre	
+	}
+}

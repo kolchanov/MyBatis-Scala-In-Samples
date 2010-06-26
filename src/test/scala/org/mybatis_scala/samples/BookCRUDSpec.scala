@@ -96,12 +96,22 @@ class BookCRUDSpec extends HtmlSpecification with Textile with LogHelper {
 	DAO object should <ex> implement lazy Read method for Book class</ex>{
 		eg {
 			
-			val bookList = List (Book (BookH2IdGenerator.nextVal, "TTL1" , "ISBN1", genreArray(0)), Book (BookH2IdGenerator.nextVal, "TTL2" , "ISBN2", genreArray(1)),
-				Book (BookH2IdGenerator.nextVal, "TTL3" , "ISBN3", genreArray(1)), Book (BookH2IdGenerator.nextVal, "TTL4" , "ISBN4", genreArray(0)))
+			// prepare a book list and save this one
+			val bookList = List (
+				Book (BookH2IdGenerator.nextVal, "UTTL1" , "ISBN1", genreArray(0)), 
+				Book (BookH2IdGenerator.nextVal, "UTTL2" , "ISBN2", genreArray(1)),
+				Book (BookH2IdGenerator.nextVal, "UTTL3" , "ISBN3", genreArray(1)), 
+				Book (BookH2IdGenerator.nextVal, "UTTL4" , "ISBN4", genreArray(0)))
 			bookList.foreach (b => MyBatisDaoService.saveBook(b))
 			
-			val resList : List[BookRecord] = MyBatisDaoService.lazyLoadBookByTitle ("TTL%")
+			
+			// load all boooks with title like UTTL% and check that lazy loaded genre is correct
+			val resList : List[BookRecord] = MyBatisDaoService.lazyLoadBookByTitle ("UTTL%")
 			val book = Book(resList.head)
+
+			
+			lzDebug ("lazy read genre: "+genreArray(0))
+			lzDebug ("lazy read book: " +book)
 			
 			book.genre must_== genreArray(0)			
 		}

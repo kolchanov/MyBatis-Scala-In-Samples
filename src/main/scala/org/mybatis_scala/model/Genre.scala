@@ -1,12 +1,17 @@
 package org.mybatis_scala.model
 
-import org.mybatis_scala.util.{HashBuilder}
+
+
+trait AbstractGenre {
+	def genreId : Long
+	def name: String
+}
 
 
 /**
 *	Simple mutable bean-like class that represents record in the database 
 */
-class GenreRecord {
+class GenreRecord extends AbstractGenre {
 	var genreId:Long = 0
 	var name: String = null
 	
@@ -25,7 +30,7 @@ class GenreRecord {
 * Immutable class for the book genre
 */
 
-class Genre (val genreId: Long, val name: String) {
+class Genre (val genreId: Long, val name: String) extends AbstractGenre {
 	
 	// have to have protected constructor due to MyBastis issue #11 "Immutable POJO fails to load when lazyLoading is enabled"
 	// waiting new version

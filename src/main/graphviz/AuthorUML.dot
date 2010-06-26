@@ -1,0 +1,44 @@
+digraph AuthorUml {
+
+	fontname  = "Courier"	
+	
+	
+	node [ 
+		fontname  = "Courier"
+		shape = "record"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]
+	
+	subgraph clusterAuthor {
+		label = "Package org.mybatis_scala.model"		
+		labeljust = "l"
+		
+		subgraph cluster1 {
+		
+			style="invis"
+			
+			AbstractAuthor [
+				label = "{\<\<Trait\>\>\nAbstractAuthor|  |+ authorId: Long\l+ birthDay: org.joda.time.DateTime\l+ firstName: String\l+ lastName: String\l+ annotation: String\l}"
+			]	
+			
+			AuthorObject [
+				label = "{\<\<Object\>\>\nAuthor| |+ apply(Long, org.joda.time.DateTime,String,String,String,List[Book])\l+ apply(AuthorRecord)\l+ convertBookList(Long, ArrayList[BookRecord]): List[Book]\l+ authorOption(Option[AuthorRecord]): Option[Author]\l}"
+			]		
+		
+		}
+		
+		AuthorRecord [
+			label = "{\<\<Mutable\>\>\nAuthorRecord|+ var authorId: Long\l+ var birthDay: org.joda.time.DateTime\l+ var firstName: String\l+ var lastName: String\l+ var annotation: String\l |+ toString: String\l+ equals(Any): Boolean\l }"
+		]
+		
+		Author [
+			label = "{\<\<Immutable\>\>\nAuthor|+ val authorId: Long\l+ val birthDay: org.joda.time.DateTime\l+ val firstName: String\l+ val lastName: String\l+ val annotation: String\l |+ Author(Long, org.joda.time.DateTime,String,String,String,List[Book])\l+ this(AuthorRecord)\l+ toString: String\l+ equals(Any): Boolean\l}"
+		]		
+
+		AuthorRecord -> AbstractAuthor
+		Author -> AbstractAuthor
+	}	
+}

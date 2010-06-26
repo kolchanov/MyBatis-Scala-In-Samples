@@ -1,0 +1,6 @@
+About
+	MyBatis Scala in Samples is just a set of working MyBatis samples with Scala program language.
+How to build
+	To build MyBatis Scala in Samples with sbt call "sbt test" and open index.html.
+License
+	Apache License Version 2.0

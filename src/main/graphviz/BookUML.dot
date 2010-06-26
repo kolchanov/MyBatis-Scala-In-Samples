@@ -1,0 +1,46 @@
+digraph BookUml {
+	fontname  = "Courier"
+
+
+
+
+	node [ 
+		fontname  = "Courier"
+		shape = "record"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]
+	
+	subgraph clusterBook {
+			label = "Package org.mybatis_scala.model"		
+			labeljust = "l"
+			
+			subgraph cluster1 {
+			
+				style = "invis"
+				
+				AbstractBook [
+					label = "{\<\<Trait\>\>\nAbstractBook|  | + bookId: Long\l+ title: String\l+ isbn: String\l+ genre: Genre\l+ authorId: Option[Long]\l}"
+				]	
+
+				BookObject [
+					label = "{\<\<Object\>\>\nBook| |+ apply(Long,String,String,Genre,Author)\l+ apply(Long,String,String,Genre)\l+ apply(BookRecord)\l+ apply(BookRecord,Long)\l+ apply(BookRecord,AuthorRecord)\l+ apply(Book,Long)\l+ bookOption(Option[BookRecord]): Option[Book]\l+ bookOption(Option[BookRecord],AuthorRecord): Option[Book]}"
+				]
+				
+			}
+	
+		BookRecord [
+			label = "{\<\<Mutable\>\>\nBookRecord| + var bookId: Long\l+ var title: String\l+ var isbn: String\l+ var genre: Genre\l+ var authorId: Option[Long]|+ toString: String\l+ equals(Any): Boolean\l }"
+		]	
+
+		Book [
+			label = "{\<\<Immutable\>\>\nBook| + val bookId: Long\l+ val title: String\l+ val isbn: String\l+ val genre: Genre\l+ val authorId: Option[Long]\l|+ Book(Long,String,String,Genre,Option[Long])\l+ this(Long,String,String,Genre)\l+ this(BookRecord)\l+ toString: String\l+ equals(Any): Boolean\l+ \< (Book): Boolean\l }"
+		]
+
+
+		BookRecord -> AbstractBook	
+		Book -> AbstractBook			
+	}	
+}

@@ -1,0 +1,32 @@
+digraph Database {
+
+	fontname  = "Courier"
+
+
+	node [ 
+		fontname  = "Courier"
+		shape = "record"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]	
+
+		
+	Genre [
+		label = "{GENRE|GENRE_ID MUMBER \<pk\>\l|NAME VARCHAR(128) NULL\l }"
+	]
+	
+	Book [
+		label = "{BOOK|BOOK_ID NUMBER \<pk\>\l|TITLE VARCHAR(255) NULL\lISBN VARCHAR (32) NULL\lGENRE_ID NUMBER NULL\lAUTHOR_ID NUMBER NULL\l}"
+	]
+	
+	Author [
+		label = "{AUTHOR|AUTHOR_ID NUMBER \<pk\>\l|BIRTH_DAY DATETIME NULL\lFIRST_NAME VARCHAR(255) NULL\lLAST_NAME VARCHAR(255) NULL\lANNOTATION VARCHAR(1024) NULL\l}"
+	]
+
+	Book -> Genre [taillabel="n", headlabel="1", labeldistance = 2.5, minlen = 3]
+	Book -> Author [taillabel="n", headlabel="1", labeldistance = 2.5, minlen = 3]
+		
+
+}

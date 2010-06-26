@@ -11,7 +11,7 @@ class AppTest {
 		
 	}
 
-	@Test
+	// @Test
 	def printSpecs  {
 
 		(new ModelSpec).reportSpecs

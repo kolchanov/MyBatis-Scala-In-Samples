@@ -29,14 +29,13 @@ class GenreCRUDSpec extends HtmlSpecification with Textile with LogHelper {
 	DAO object should <ex> implement Create (save) method for Genre class</ex>{
 		 eg {
 			val count1 = MyBatisDaoService.getGenreCount
-			count1 must_== 0 
 
 			val genre1 = new Genre (GenreH2IdGenerator.nextVal,"Name1")
 			MyBatisDaoService.saveGenre(genre1).isExpectation 					
 			//isExpectation is a Spec method to be sure that Excepion was  not thrown
 			
 			val count2 = MyBatisDaoService.getGenreCount
-			count2 must_== 1			
+			(count2-count1) must_== 1			
 		}
 	}
 

@@ -52,7 +52,7 @@ class Author protected (val authorId: Long, val birthDay: DateTime, val firstNam
   override def equals(other: Any) = other match {
     case that: Author =>
       this.authorId == that.authorId && this.birthDay == that.birthDay && this.firstName == that.firstName &&
-				this.lastName == that.lastName && this.annotation == that.annotation && this.books.sort ((e1, e2) => e1 < e2) == that.books.sort ((e1, e2) => e1 < e2)  
+				this.lastName == that.lastName && this.annotation == that.annotation && this.books.sortWith ((e1, e2) => e1 < e2) == that.books.sortWith ((e1, e2) => e1 < e2)  
     case _ =>
       false
   }

@@ -36,27 +36,27 @@ object Schema extends LogHelper {
 			conn.createStatement().executeUpdate("""
 			CREATE TABLE GENRE (
 				GENRE_ID	number primary key,
-				NAME	varchar(128)
+				NAME	varchar(128) null
 			)
 			""")						
 
 			conn.createStatement().executeUpdate("""
 			CREATE TABLE BOOK (
 				BOOK_ID 	number primary key,
-				TITLE	varchar (255),
-				ISBN varchar (32),				
-				GENRE_ID number,
-				AUTHOR_ID number
+				TITLE	varchar (255) null,
+				ISBN varchar (32) null,				
+				GENRE_ID number null,
+				AUTHOR_ID number null
 			)
 			""")						
 
 			conn.createStatement().executeUpdate("""
 			CREATE TABLE AUTHOR (
 				AUTHOR_ID number primary key,
-				BIRTH_DAY	DATETIME,
-				FIRST_NAME varchar (255),				
-				LAST_NAME varchar (255),
-				ANNOTATION varchar(1024)
+				BIRTH_DAY	DATETIME null,
+				FIRST_NAME varchar (255) null,				
+				LAST_NAME varchar (255) null,
+				ANNOTATION varchar(1024) null
 			)
 			""")						
 				

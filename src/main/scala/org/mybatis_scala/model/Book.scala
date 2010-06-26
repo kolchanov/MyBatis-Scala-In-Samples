@@ -1,10 +1,19 @@
 package org.mybatis_scala.model
 import org.mybatis_scala.util.{HashBuilder,LogHelper}
 
+
+trait AbstractBook {
+	def bookId: Long 
+	def title : String
+	def isbn : String 
+	def genre : Genre 
+	def authorId: Option[Long]
+}
+
 /**
 * Mutable Bean-like Book
 */
-class BookRecord {
+class BookRecord extends AbstractBook{
 	var bookId: Long = 0
 	var title : String = null
 	var isbn : String = null
@@ -24,7 +33,7 @@ class BookRecord {
 /**
 * Immutable Book
 */
-class Book (val bookId: Long, val title: String , val isbn: String, val genre: Genre, val authorId: Option[Long]) {
+class Book (val bookId: Long, val title: String , val isbn: String, val genre: Genre, val authorId: Option[Long]) extends AbstractBook{
 	
 	def this (bookId: Long, title: String, isbn: String, genre: Genre) = this (bookId, title, isbn, genre, None)	
 	def this (br: BookRecord) = this (br.bookId, br.title, br.isbn, br.genre, br.authorId)
