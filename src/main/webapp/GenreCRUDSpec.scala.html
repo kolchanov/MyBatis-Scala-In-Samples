@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>GenreCRUDSpec.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.samples
+
+<span class="keyword">import</span> org.mybatis_scala.util.{LogHelper,Schema}
+<span class="keyword">import</span> org.specs.{HtmlSpecification,Specification}
+<span class="keyword">import</span> org.specs.literate.Textile
+
+<span class="keyword">import</span> org.mybatis_scala.model._
+<span class="keyword">import</span> org.mybatis_scala.service.mybatis._
+<span class="keyword">import</span> org.mybatis_scala.service.generator._
+<span class="keyword">import</span> h2db._
+
+
+<span class="keyword">class</span> <a title="class GenreCRUDSpec extends org.specs.HtmlSpecification with org.specs.literate.Textile with org.mybatis_scala.util.LogHelper with ScalaObject" id="9168">GenreCRUDSpec</a> <span title="ScalaObject" class="keyword">extends</span> <span title="org.specs.HtmlSpecification">HtmlSpecification</span> <span class="keyword">with</span> <span title="org.specs.literate.Textile">Textile</span> <span class="keyword">with</span> <span title="org.mybatis_scala.util.LogHelper">LogHelper</span> {
+	
+	<span class="keyword">val</span> <a title="java.sql.Connection" id="19417">connection</a> = <span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="=&gt; java.sql.Connection">conn</span>
+	
+	<a href="#9168" title="(actions: =&gt; Any)Option[Unit]">doFirst</a> {
+		// Initilize database schema
+		<span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="()Unit">init</span>()		
+	}	
+	
+	<a href="#9168" title="(e: =&gt; scala.xml.Elem)Any" class="string">&quot;GenreCRUDSpec spec&quot;</a> is &lt;<a title="scala.xml.Elem" id="32866">t</a>&gt;
+	
+	h2. CRUD operations <span class="keyword">for</span> simple <span class="keyword">object</span>
+	
+	The Genre entity is very simple and has not assoiations or collections, so very basic CRUD operations should be implemented.
+	Also list operations are covered.
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32870">ex</a>&gt; implement Create (save) method <span class="keyword">for</span> Genre <span class="keyword">class</span>&lt;/ex&gt;{
+		 <a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="Int" id="32883">count1</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getGenreCount</span>
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="32884">genre1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#32884" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span> 					
+			//isExpectation is a Spec method to be sure that Excepion was  not thrown
+			
+			<span class="keyword">val</span> <a title="Int" id="32885">count2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getGenreCount</span>
+			<span title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">(</span><a href="#32885" title="(x$1: Int)Int">count2</a><a href="#9168" title="(value: =&gt; Int)org.specs.specification.Expectation[Int]">-</a><a href="#32883" title="Int">count1</a>) <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="Int(1)" class="int">1</span>			
+		}
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32965">ex</a>&gt; allow save Genre list in a single tansaction&lt;/ex&gt;{
+		 <a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="Int" id="32978">count1</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getGenreCount</span>
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Genre]" id="32979">lst</a> : <span title="List[org.mybatis_scala.model.Genre]">List</span>[Genre] = <span title="(xs: org.mybatis_scala.model.Genre*)List[org.mybatis_scala.model.Genre]">List</span> (<span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>), <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name2&quot;)" class="string">&quot;Name2&quot;</span>))			
+			
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(operation: (org.apache.ibatis.session.SqlSession) =&gt; List[Int])List[Int]">exec</span> { <a title="org.apache.ibatis.session.SqlSession" id="33138">session</a> =&gt;
+				<a href="#32979" title="List[org.mybatis_scala.model.Genre]">lst</a>.<span title="(f: (org.mybatis_scala.model.Genre) =&gt; Int)(implicit bf: scala.collection.generic.CanBuildFrom[List[org.mybatis_scala.model.Genre],Int,List[Int]])List[Int]">map</span> <span title="scala.collection.generic.CanBuildFrom[scala.collection.immutable.List.Coll,Int,List[Int]]">(</span><a title="org.mybatis_scala.model.Genre" id="33151">g</a> =&gt; <a href="#33138" title="org.apache.ibatis.session.SqlSession">session</a>.<span title="(x$1: java.lang.String,x$2: Any)Int">insert</span> (<span title="java.lang.String(&quot;insertGenre&quot;)" class="string">&quot;insertGenre&quot;</span>,<a href="#33151" title="org.mybatis_scala.model.Genre">g</a>))
+			}
+			
+			<span class="keyword">val</span> <a title="Int" id="32980">count2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getGenreCount</span>
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">count2</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#32979" title="List[org.mybatis_scala.model.Genre]">lst</a>.<span title="(x$1: Int)Int">size</span> + <a href="#32978" title="Int">count1</a> 
+			
+			// next transaction must be rollbacked
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Genre]" id="32981">lst2</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name3&quot;)" class="string">&quot;Name3&quot;</span>) <a href="#33436" title="org.mybatis_scala.model.Genre">::</a> <a href="#32979" title="(x: org.mybatis_scala.model.Genre)List[org.mybatis_scala.model.Genre]">lst</a>
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(operation: (org.apache.ibatis.session.SqlSession) =&gt; List[Int])List[Int]">exec</span> <a href="#9168" title="(m: =&gt; org.specs.matcher.Matcher[List[Int]])org.specs.specification.Result[List[Int]]">{</a> <a title="org.apache.ibatis.session.SqlSession" id="33449">session</a> =&gt;
+				<a href="#32979" title="List[org.mybatis_scala.model.Genre]">lst</a>.<span title="(f: (org.mybatis_scala.model.Genre) =&gt; Int)(implicit bf: scala.collection.generic.CanBuildFrom[List[org.mybatis_scala.model.Genre],Int,List[Int]])List[Int]">map</span> <span title="scala.collection.generic.CanBuildFrom[scala.collection.immutable.List.Coll,Int,List[Int]]">(</span><a title="org.mybatis_scala.model.Genre" id="33458">g</a> =&gt; <a href="#33449" title="org.apache.ibatis.session.SqlSession">session</a>.<span title="(x$1: java.lang.String,x$2: Any)Int">insert</span> (<span title="java.lang.String(&quot;insertGenre&quot;)" class="string">&quot;insertGenre&quot;</span>,<a href="#33458" title="org.mybatis_scala.model.Genre">g</a>))
+			}	must <a href="#9168" title="[E &lt;: Throwable](implicit m: scala.reflect.ClassManifest[E])GenreCRUDSpec.this.ExceptionClassMatcher[E]">throwA</a><span title="(implicit m: scala.reflect.ClassManifest[Exception])GenreCRUDSpec.this.ExceptionClassMatcher[Exception]">[</span><span title="Exception">Exception</span>]
+			
+		 	<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">getGenreCount</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#32980" title="Int">count2</a>			
+		}
+	}
+
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="33801">ex</a>&gt; implement Read method <span class="keyword">for</span> Genre <span class="keyword">class</span>&lt;/ex&gt;{
+		<a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="33814">genre1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#33814" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span>			
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Genre]" id="33815">genre2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.Genre]">loadGenreById</span> (<a href="#33814" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>)
+			<a href="#33815" title="Option[org.mybatis_scala.model.Genre]">genre2</a>.<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">get</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#33814" title="org.mybatis_scala.model.Genre">genre1</a>	
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Genre]" id="33816">genre3</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.Genre]">loadGenreById</span> (<span title="Long(-1L)">-</span><span class="int">1</span>)
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Genre]]">genre3</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="object None">None</span>			
+		}				
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="33927">ex</a>&gt; implement Read method <span class="keyword">for</span> GenreRecord <span class="keyword">class</span>&lt;/ex&gt;{
+		<a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="33940">genre1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#33940" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span>			
+
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.GenreRecord]" id="33941">gr1</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.GenreRecord]">loadGenreRecordById</span> (<a href="#33940" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>)
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="33942">genre2</a> = <span title="(genre: org.mybatis_scala.model.GenreRecord)org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<a href="#33941" title="Option[org.mybatis_scala.model.GenreRecord]">gr1</a>.<span title="(default: =&gt; org.mybatis_scala.model.GenreRecord)org.mybatis_scala.model.GenreRecord">getOrElse</span>(<span title="org.mybatis_scala.model.GenreRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.GenreRecord">GenreRecord</span>))
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">genre2</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#33940" title="org.mybatis_scala.model.Genre">genre1</a>	
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.GenreRecord]" id="33943">gr2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.GenreRecord]">loadGenreRecordById</span> (<span title="Long(-1L)">-</span><span class="int">1</span>)
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.GenreRecord]]">gr2</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="object None">None</span>			
+		}				
+	}
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="34064">ex</a>&gt; implement method <span class="keyword">for</span> get Genre list by name&lt;/ex&gt;{
+		<a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Genre]" id="34077">lst</a> : <span title="List[org.mybatis_scala.model.Genre]">List</span>[Genre] = <span title="(xs: org.mybatis_scala.model.Genre*)List[org.mybatis_scala.model.Genre]">List</span> (<span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Q1&quot;)" class="string">&quot;Q1&quot;</span>), <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Q2&quot;)" class="string">&quot;Q2&quot;</span>))
+			<a href="#34077" title="List[org.mybatis_scala.model.Genre]">lst</a>.<span title="(f: (org.mybatis_scala.model.Genre) =&gt; Unit)Unit">foreach</span> (<a title="org.mybatis_scala.model.Genre" id="34108">g</a> =&gt; <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span>(<a href="#34108" title="org.mybatis_scala.model.Genre">g</a>))
+		
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Genre]" id="34078">glist</a> : <span title="List[org.mybatis_scala.model.Genre]">List</span>[Genre] = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(name: String)List[org.mybatis_scala.model.Genre]">loadGenreByName</span> (<span title="java.lang.String(&quot;Q%&quot;)" class="string">&quot;Q%&quot;</span>)
+			<a href="#34078" title="List[org.mybatis_scala.model.Genre]">glist</a>.<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">size</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="Int(2)" class="int">2</span>			
+		}				
+	}	
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="34152">ex</a>&gt; implement Update method <span class="keyword">for</span> the Genre Entity&lt;/ex&gt;{
+		<a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="34165">genre1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#34165" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span>
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="34166">genre2</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<a href="#34165" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>, <span title="java.lang.String(&quot;Name2&quot;)" class="string">&quot;Name2&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">updateGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#34166" title="org.mybatis_scala.model.Genre">genre2</a>).<span title="=&gt; Unit">isExpectation</span>
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Genre]" id="34167">genre3</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.Genre]">loadGenreById</span> (<a href="#34165" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>)
+			
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">genre2</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#34167" title="Option[org.mybatis_scala.model.Genre]">genre3</a>.<span title="=&gt; org.mybatis_scala.model.Genre">get</span>					
+		}
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="34278">ex</a>&gt; implement Delete method <span class="keyword">for</span> the Genre Entity&lt;/ex&gt;{
+		<a href="#9168" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="34291">genre1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#34291" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span>
+
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Genre]" id="34292">genre2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.Genre]">loadGenreById</span> (<a href="#34291" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>)
+			<a href="#34292" title="Option[org.mybatis_scala.model.Genre]">genre2</a>.<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">get</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#34291" title="org.mybatis_scala.model.Genre">genre1</a>
+
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">deleteGenre</span><a href="#9168" title="(a: =&gt; Unit)GenreCRUDSpec.this.ExpectationCounter[Unit]">(</a><a href="#34291" title="org.mybatis_scala.model.Genre">genre1</a>).<span title="=&gt; Unit">isExpectation</span>
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Genre]" id="34293">genre3</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.Genre]">loadGenreById</span> (<a href="#34291" title="org.mybatis_scala.model.Genre">genre1</a>.<span title="=&gt; Long">genreId</span>)
+
+			<a href="#9168" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Genre]]">genre3</a> <a href="#9168" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="object None">None</span>			
+		}
+	}
+	
+	&lt;/t&gt;
+}
+
+        </pre>
+    </body>
+</html>

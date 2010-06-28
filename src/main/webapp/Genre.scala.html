@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>Genre.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.model
+
+
+
+<span class="keyword">trait</span> <a title="trait AbstractGenre extends java.lang.Object" id="9149">AbstractGenre</a> <span title="java.lang.Object">{</span>
+	<span class="keyword">def</span> <a title="=&gt; Long" id="19014">genreId</a> : <span title="Long">Long</span>
+	<span class="keyword">def</span> <a title="=&gt; String" id="19015">name</a>: <span title="String">String</span>
+}
+
+
+/**
+*	Simple mutable bean-like class that represents record in the database 
+*/
+<span class="keyword">class</span> <a title="class GenreRecord extends java.lang.Object with org.mybatis_scala.model.AbstractGenre with ScalaObject" id="9150">GenreRecord</a> <span title="ScalaObject" class="keyword">extends</span> <a href="#9149" title="org.mybatis_scala.model.AbstractGenre">AbstractGenre</a> {
+	<span class="keyword">var</span> <a title="Long" id="21004">genreId</a>:<span title="Long">Long</span> = <span title="Long(0L)" class="int">0</span>
+	<span class="keyword">var</span> <a title="String" id="21007">name</a>: <span title="String">String</span> = <span title="Null(null)" class="keyword">null</span>
+	
+	<span class="keyword">override</span> <span class="keyword">def</span> <a title="()java.lang.String" id="21009">toString</a>() = <span title="(x$1: Any)java.lang.String" class="string">&quot;GenreRecord[genreId: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#21004" title="=&gt; Long">genreId</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot; name: &quot;)" class="string">&quot; name: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#21007" title="=&gt; String">name</a>+<span title="java.lang.String(&quot;]&quot;)" class="string">&quot;]&quot;</span>
+	
+  <span class="keyword">override</span> <span class="keyword">def</span> <a title="(other: Any)Boolean" id="21010">equals</a>(<a title="Any" id="21021">other</a>: <span title="Any">Any</span>) = <a href="#21021" title="Any">other</a> <span title="Boolean" class="keyword">match</span> {
+    <span title="Boolean" class="keyword">case</span> <a title="org.mybatis_scala.model.GenreRecord" id="21024">that</a>: <a href="#9150" title="org.mybatis_scala.model.GenreRecord">GenreRecord</a> =&gt;
+      <a href="#9150" title="GenreRecord.this.type" class="keyword">this</a>.<a href="#21004" title="(x$1: Long)Boolean">genreId</a> <span title="(x$1: Boolean)Boolean">==</span> <a href="#21024" title="org.mybatis_scala.model.GenreRecord">that</a>.<a href="#21004" title="=&gt; Long">genreId</a> &amp;&amp; <a href="#9150" title="GenreRecord.this.type" class="keyword">this</a>.<a href="#21007" title="(x$1: AnyRef)Boolean">name</a> == <a href="#21024" title="org.mybatis_scala.model.GenreRecord">that</a>.<a href="#21007" title="=&gt; String">name</a>
+    <span title="Boolean(false)" class="keyword">case</span> _ =&gt;
+      <span title="Boolean(false)" class="keyword">false</span>
+  }	
+
+}
+
+/**
+* Immutable class for the book genre
+*/
+
+<span class="keyword">class</span> <a title="class Genre extends java.lang.Object with org.mybatis_scala.model.AbstractGenre with ScalaObject" id="9151">Genre</a> <span title="ScalaObject">(</span><span class="keyword">val</span> <a title="Long" id="21041">genreId</a>: <span title="Long">Long</span>, <span class="keyword">val</span> <a title="String" id="21042">name</a>: <span title="String">String</span>) <span class="keyword">extends</span> <a href="#9149" title="org.mybatis_scala.model.AbstractGenre">AbstractGenre</a> {
+	
+	// have to have protected constructor due to MyBastis issue #11 &quot;Immutable POJO fails to load when lazyLoading is enabled&quot;
+	// waiting new version
+	<span class="keyword">protected</span> <span class="keyword">def</span> <a title="()org.mybatis_scala.model.Genre" id="19023" class="keyword">this</a> () = <a href="#9151" title="Genre.this.type" class="keyword">this</a> (<span title="Long(0L)" class="int">0</span>,<span title="java.lang.String(&quot;&quot;)" class="string">&quot;&quot;</span>)
+	
+	<span class="keyword">def</span> <a title="(genre: org.mybatis_scala.model.GenreRecord)org.mybatis_scala.model.Genre" id="19024" class="keyword">this</a> (<a title="org.mybatis_scala.model.GenreRecord" id="21052">genre</a>: <a href="#9150" title="org.mybatis_scala.model.GenreRecord">GenreRecord</a>) =  <a href="#9151" title="Genre.this.type" class="keyword">this</a> (<a href="#21052" title="org.mybatis_scala.model.GenreRecord">genre</a>.<a href="#21004" title="=&gt; Long">genreId</a>, <a href="#21052" title="org.mybatis_scala.model.GenreRecord">genre</a>.<a href="#21007" title="=&gt; String">name</a>)
+	
+	<span class="keyword">override</span> <span class="keyword">def</span> <a title="()java.lang.String" id="19025">toString</a>() = <span title="(x$1: Any)java.lang.String" class="string">&quot;GenreRecord[genreId: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#21041" title="=&gt; Long">genreId</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot; name: &quot;)" class="string">&quot; name: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#21042" title="=&gt; String">name</a>+<span title="java.lang.String(&quot;]&quot;)" class="string">&quot;]&quot;</span>
+	
+  <span class="keyword">override</span> <span class="keyword">def</span> <a title="(other: Any)Boolean" id="19026">equals</a>(<a title="Any" id="21069">other</a>: <span title="Any">Any</span>) = <a href="#21069" title="Any">other</a> <span title="Boolean" class="keyword">match</span> {
+    <span title="Boolean" class="keyword">case</span> <a title="org.mybatis_scala.model.Genre" id="21072">that</a>: <a href="#9151" title="org.mybatis_scala.model.Genre">Genre</a> =&gt;
+      <a href="#9151" title="Genre.this.type" class="keyword">this</a>.<a href="#21041" title="(x$1: Long)Boolean">genreId</a> <span title="(x$1: Boolean)Boolean">==</span> <a href="#21072" title="org.mybatis_scala.model.Genre">that</a>.<a href="#21041" title="=&gt; Long">genreId</a> &amp;&amp; <a href="#9151" title="Genre.this.type" class="keyword">this</a>.<a href="#21042" title="(x$1: AnyRef)Boolean">name</a> == <a href="#21072" title="org.mybatis_scala.model.Genre">that</a>.<a href="#21042" title="=&gt; String">name</a>
+    <span title="Boolean(false)" class="keyword">case</span> _ =&gt;
+      <span title="Boolean(false)" class="keyword">false</span>
+  }	
+
+	<span class="keyword">def</span> <a title="(that: org.mybatis_scala.model.Genre)Boolean" id="19027">&lt;</a> (<a title="org.mybatis_scala.model.Genre" id="20968">that</a> : <a href="#9151" title="org.mybatis_scala.model.Genre">Genre</a>) : <span title="Boolean">Boolean</span> ={
+		(<a href="#9151" title="Genre.this.type" class="keyword">this</a>.<a href="#21041" title="(x$1: Long)Boolean">genreId</a> &lt; <a href="#20968" title="org.mybatis_scala.model.Genre">that</a>.<a href="#21041" title="=&gt; Long">genreId</a>) <span title="Boolean" class="keyword">match</span> {
+			<span title="Boolean(true)" class="keyword">case</span> <span title="Boolean(true)" class="keyword">true</span> =&gt; <span title="Boolean(true)" class="keyword">true</span>
+			<span title="Boolean(false)" class="keyword">case</span> <span title="Boolean(false)" class="keyword">false</span> =&gt; <span title="Boolean(false)" class="keyword">false</span>
+			<span title="Boolean" class="keyword">case</span> _ =&gt; <a href="#9151" title="Genre.this.type" class="keyword">this</a>.<a href="#21042" title="(that: String)Boolean">name</a> &lt; <a href="#20968" title="org.mybatis_scala.model.Genre">that</a>.<a href="#21042" title="=&gt; String">name</a>
+		}
+	}
+
+}
+        </pre>
+    </body>
+</html>

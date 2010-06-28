@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>TypeHandlers.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.service.mybatis
+
+<span class="keyword">import</span> org.apache.ibatis.`type`.{TypeHandler, JdbcType}
+<span class="keyword">import</span> java.sql.{ResultSet, CallableStatement, PreparedStatement}
+<span class="keyword">import</span> org.mybatis_scala.util.LogHelper
+
+<span class="keyword">class</span> <a title="class OptionLongTypeHandler extends java.lang.Object with org.apache.ibatis.type.TypeHandler with org.mybatis_scala.util.LogHelper with ScalaObject" id="9212">OptionLongTypeHandler</a> <span title="ScalaObject" class="keyword">extends</span> <span title="org.apache.ibatis.type.TypeHandler">TypeHandler</span> <span class="keyword">with</span> <a href="LogHelper.scala.html#9228" title="org.mybatis_scala.util.LogHelper">LogHelper</a>{
+	<span class="keyword">def</span> <a title="(ps: java.sql.PreparedStatement,i: Int,parameter: Any,jdbcType: org.apache.ibatis.type.JdbcType)Unit" id="24025">setParameter</a>(<a title="java.sql.PreparedStatement" id="24030">ps</a>:<span title="java.sql.PreparedStatement">PreparedStatement</span>, <a title="Int" id="24031">i</a> : <span title="Int">Int</span>, <a title="Any" id="24032">parameter</a> : <span title="Any">Any</span>, <a title="org.apache.ibatis.type.JdbcType" id="24033">jdbcType</a> : <span title="org.apache.ibatis.type.JdbcType">JdbcType</span>) : <span title="Unit">Unit</span> = {
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;OptionLongTypeHandler.setParameter called&quot;)" class="string">&quot;OptionLongTypeHandler.setParameter called&quot;</span>)	
+		<span class="keyword">val</span> <a title="Option[Long]" id="24271">par</a> : <span title="Option[Long]">Option</span>[Long] = <a href="#24032" title="Any">parameter</a>.<span title="[T0]T0">asInstanceOf</span><span title="Option[Long]">[</span><span title="Option[Long]">Option</span>[Long]]
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;OptionLongTypeHandler par: &quot;</span>+<a href="#24271" title="Option[Long]">par</a>)	
+		<span title="Unit" class="keyword">if</span> (<a href="#24271" title="Option[Long]">par</a>.<span title="=&gt; Boolean">isDefined</span>) {
+			<a href="#24030" title="java.sql.PreparedStatement">ps</a>.<span title="(x$1: Int,x$2: Long)Unit">setLong</span>(<a href="#24031" title="Int">i</a>, <a href="#24271" title="Option[Long]">par</a>.<span title="=&gt; Long">get</span>)
+		}
+		<span class="keyword">else</span> {
+			<a href="#24030" title="java.sql.PreparedStatement">ps</a>.<span title="(x$1: Int,x$2: Int)Unit">setNull</span>(<a href="#24031" title="Int">i</a>, java.sql.Types.<span title="Int(2)">NUMERIC</span>)
+		}
+	}
+	
+	<span class="keyword">def</span> <a title="(rs: java.sql.ResultSet,columnName: String)java.lang.Object" id="24026">getResult</a> (<a title="java.sql.ResultSet" id="24387">rs</a>: <span title="java.sql.ResultSet">ResultSet</span>, <a title="String" id="24388">columnName</a>: <span title="String">String</span>) : java.lang.<span title="java.lang.Object">Object</span> = {
+		
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;OptionLongTypeHandler.getResult called&quot;)" class="string">&quot;OptionLongTypeHandler.getResult called&quot;</span>)		
+		<span class="keyword">val</span> <a title="java.lang.String" id="25175">value</a> = <a href="#24387" title="java.sql.ResultSet">rs</a>.<span title="(x$1: java.lang.String)java.lang.String">getString</span>(<a href="#24388" title="String">columnName</a>)
+		<span class="keyword">val</span> <a title="Option[Long]" id="25176">res</a> : <span title="Option[Long]">Option</span>[Long] =  {
+			<a href="#25175" title="java.lang.String">value</a>  <span title="Option[Long]" class="keyword">match</span>  {
+				<span title="None.type" class="keyword">case</span> <span title="Null(null)" class="keyword">null</span> =&gt; <span title="object None">None</span>
+				<span title="Some[Long]" class="keyword">case</span> _ =&gt; <span title="(x: Long)Some[Long]">Some</span>(<a href="#25175" title="implicit scala.Predef.augmentString : (x: String)scala.collection.immutable.StringOps">value</a>.<span title="=&gt; Long">toLong</span>)
+			}
+		}
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;OptionLongTypeHandler.getResult res: &quot;</span>+<a href="#25176" title="Option[Long]">res</a>)
+		<a href="#25176" title="Option[Long]">res</a>
+	}
+	
+	<span class="keyword">def</span> <a title="(cs: java.sql.CallableStatement,columnIndex: Int)java.lang.Object" id="24027">getResult</a> (<a title="java.sql.CallableStatement" id="25201">cs</a> : <span title="java.sql.CallableStatement">CallableStatement</span>, <a title="Int" id="25202">columnIndex</a> : <span title="Int">Int</span>) : java.lang.<span title="java.lang.Object">Object</span> = {
+		<span class="keyword">val</span> <a title="java.lang.String" id="25205">value</a> = <a href="#25201" title="java.sql.CallableStatement">cs</a>.<span title="(x$1: Int)java.lang.String">getString</span>(<a href="#25202" title="Int">columnIndex</a>)
+		<span class="keyword">val</span> <a title="Option[Long]" id="25206">res</a> : <span title="Option[Long]">Option</span>[Long] =  {
+			<a href="#25205" title="java.lang.String">value</a>  <span title="Option[Long]" class="keyword">match</span>  {
+				<span title="None.type" class="keyword">case</span> <span title="Null(null)" class="keyword">null</span> =&gt; <span title="object None">None</span>
+				<span title="Some[Long]" class="keyword">case</span> _ =&gt; <span title="(x: Long)Some[Long]">Some</span>(<a href="#25205" title="implicit scala.Predef.augmentString : (x: String)scala.collection.immutable.StringOps">value</a>.<span title="=&gt; Long">toLong</span>)
+			}
+		}
+		<a href="#25206" title="Option[Long]">res</a>
+	} 
+	
+}
+
+<span class="keyword">class</span> <a title="class JodaTimeTypeHandler extends java.lang.Object with org.apache.ibatis.type.TypeHandler with org.mybatis_scala.util.LogHelper with ScalaObject" id="9213">JodaTimeTypeHandler</a>  <span title="ScalaObject" class="keyword">extends</span> <span title="org.apache.ibatis.type.TypeHandler">TypeHandler</span> <span class="keyword">with</span> <a href="LogHelper.scala.html#9228" title="org.mybatis_scala.util.LogHelper">LogHelper</a>{
+	<span class="keyword">import</span> org.joda.time.DateTime
+	
+	<span class="keyword">def</span> <a title="(ps: java.sql.PreparedStatement,i: Int,parameter: Any,jdbcType: org.apache.ibatis.type.JdbcType)Unit" id="25229">setParameter</a>(<a title="java.sql.PreparedStatement" id="25234">ps</a>:<span title="java.sql.PreparedStatement">PreparedStatement</span>, <a title="Int" id="25235">i</a> : <span title="Int">Int</span>, <a title="Any" id="25236">parameter</a> : <span title="Any">Any</span>, <a title="org.apache.ibatis.type.JdbcType" id="25237">jdbcType</a> : <span title="org.apache.ibatis.type.JdbcType">JdbcType</span>) : <span title="Unit">Unit</span> = {
+		<span class="keyword">val</span> <a title="org.joda.time.DateTime" id="25239">par</a> = <a href="#25236" title="Any">parameter</a>.<span title="[T0]T0">asInstanceOf</span><span title="org.joda.time.DateTime">[</span><span title="org.joda.time.DateTime">DateTime</span>]
+		<a href="#25234" title="java.sql.PreparedStatement">ps</a>.<span title="(x$1: Int,x$2: java.sql.Timestamp)Unit">setTimestamp</span> (<a href="#25235" title="Int">i</a>,<span title="(x$1: Long)java.sql.Timestamp" class="keyword">new</span> java.sql.<span title="java.sql.Timestamp">Timestamp</span>(<a href="#25239" title="org.joda.time.DateTime">par</a>.<span title="()Long">getMillis</span>()))
+	}
+	<span class="keyword">def</span> <a title="(rs: java.sql.ResultSet,columnName: String)java.lang.Object" id="25230">getResult</a> (<a title="java.sql.ResultSet" id="25568">rs</a>: <span title="java.sql.ResultSet">ResultSet</span>, <a title="String" id="25569">columnName</a>: <span title="String">String</span>) : java.lang.<span title="java.lang.Object">Object</span> = {
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;JodaTimeTypeHandler.getResult &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#25569" title="String">columnName</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot;: &quot;)" class="string">&quot;: &quot;</span>+<a href="#25568" title="java.sql.ResultSet">rs</a>.<span title="(x$1: java.lang.String)java.sql.Timestamp">getTimestamp</span>(<a href="#25569" title="String">columnName</a>))
+		<span class="keyword">val</span> <a title="org.joda.time.DateTime" id="25572">res</a> = <span title="(x$1: Any)org.joda.time.DateTime" class="keyword">new</span> <span title="org.joda.time.DateTime">DateTime</span> (<a href="#25568" title="java.sql.ResultSet">rs</a>.<span title="(x$1: java.lang.String)java.sql.Timestamp">getTimestamp</span>(<a href="#25569" title="String">columnName</a>))
+		<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;JodaTimeTypeHandler.getResult res: &quot;</span>+<a href="#25572" title="org.joda.time.DateTime">res</a>)
+		<a href="#25572" title="org.joda.time.DateTime">res</a>
+	}
+	<span class="keyword">def</span> <a title="(cs: java.sql.CallableStatement,columnIndex: Int)java.lang.Object" id="25231">getResult</a> (<a title="java.sql.CallableStatement" id="25594">cs</a> : <span title="java.sql.CallableStatement">CallableStatement</span>, <a title="Int" id="25595">columnIndex</a> : <span title="Int">Int</span>) : java.lang.<span title="java.lang.Object">Object</span> = {
+		<span title="(x$1: Any)org.joda.time.DateTime" class="keyword">new</span> <span title="org.joda.time.DateTime">DateTime</span> (<a href="#25594" title="java.sql.CallableStatement">cs</a>.<span title="(x$1: Int)java.sql.Timestamp">getTimestamp</span>(<a href="#25595" title="Int">columnIndex</a>))
+	}
+	
+}
+        </pre>
+    </body>
+</html>

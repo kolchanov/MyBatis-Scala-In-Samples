@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>ModelSpec.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.samples
+
+<span class="keyword">import</span> org.mybatis_scala.util.LogHelper
+<span class="keyword">import</span> org.specs.{HtmlSpecification,Specification}
+<span class="keyword">import</span> org.specs.literate.Textile
+<span class="keyword">import</span> org.mybatis_scala.model._
+<span class="keyword">import</span> java.util.{Date,ArrayList}
+<span class="keyword">import</span> org.joda.time.DateTime
+
+
+<span class="keyword">class</span> <a title="class ModelSpec extends org.specs.HtmlSpecification with org.specs.literate.Textile with org.mybatis_scala.util.LogHelper with ScalaObject" id="9188">ModelSpec</a> <span title="ScalaObject" class="keyword">extends</span> <span title="org.specs.HtmlSpecification">HtmlSpecification</span> <span class="keyword">with</span> <span title="org.specs.literate.Textile">Textile</span> <span class="keyword">with</span> <span title="org.mybatis_scala.util.LogHelper">LogHelper</span>{
+		
+	<a href="#9188" title="(e: =&gt; scala.xml.Elem)Any" class="string">&quot;Sample Application Model Classes description&quot;</a> is &lt;<a title="scala.xml.Elem" id="35075">t</a>&gt;
+	
+	h2. Class description
+	
+	All Scala MyBatis samlples will be created around three enities: Genre, Book and Author.
+	
+	h3. Genre
+	
+	GenreRecord and Genre are business model classes <span class="keyword">for</span> the book genre.
+	GenreRecord is mutable bean-like <span class="keyword">class</span> that represents a record in the GENRE table.
+	Genre is  immutable <span class="keyword">class</span> <span class="keyword">for</span> the same purpose.
+
+	Application should &lt;<a title="scala.xml.Elem" id="35079">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of GenreRecord&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.GenreRecord" id="35094">gr1</a> = <span title="org.mybatis_scala.model.GenreRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.GenreRecord">GenreRecord</span> 
+			<a href="#35094" title="org.mybatis_scala.model.GenreRecord">gr1</a>.<span title="(x$1: Long)Unit">genreId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35094" title="org.mybatis_scala.model.GenreRecord">gr1</a>.<span title="(x$1: String)Unit">name</span> = <span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.GenreRecord" id="35095">gr2</a> = <span title="org.mybatis_scala.model.GenreRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.GenreRecord">GenreRecord</span>
+			<a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>.<span title="(x$1: Long)Unit">genreId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>.<span title="(x$1: String)Unit">name</span> = <span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;gr1: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#35094" title="org.mybatis_scala.model.GenreRecord">gr1</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot; gr2: &quot;)" class="string">&quot; gr2: &quot;</span>+<a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>)		
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.GenreRecord]">gr1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>
+		
+			// modify mutable GenreRecord
+			<a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>.<span title="(x$1: String)Unit">name</span>  = <span title="java.lang.String(&quot;Name2&quot;)" class="string">&quot;Name2&quot;</span>
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;modified g2: &quot;</span>+<a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>)
+		
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.GenreRecord]">gr1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35095" title="org.mybatis_scala.model.GenreRecord">gr2</a>
+						
+		}
+	}
+
+	Application should &lt;<a title="scala.xml.Elem" id="35181">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of Genre&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.GenreRecord" id="35196">gr1</a> = <span title="org.mybatis_scala.model.GenreRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.GenreRecord">GenreRecord</span> 
+			<a href="#35196" title="org.mybatis_scala.model.GenreRecord">gr1</a>.<span title="(x$1: Long)Unit">genreId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35196" title="org.mybatis_scala.model.GenreRecord">gr1</a>.<span title="(x$1: String)Unit">name</span> = <span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.GenreRecord" id="35197">gr2</a> = <span title="org.mybatis_scala.model.GenreRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.GenreRecord">GenreRecord</span>
+			<a href="#35197" title="org.mybatis_scala.model.GenreRecord">gr2</a>.<span title="(x$1: Long)Unit">genreId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35197" title="org.mybatis_scala.model.GenreRecord">gr2</a>.<span title="(x$1: String)Unit">name</span> = <span title="java.lang.String(&quot;Name2&quot;)" class="string">&quot;Name2&quot;</span>
+			
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;gr1: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#35196" title="org.mybatis_scala.model.GenreRecord">gr1</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot; gr2: &quot;)" class="string">&quot; gr2: &quot;</span>+<a href="#35197" title="org.mybatis_scala.model.GenreRecord">gr2</a>)		
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35198">g1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(1L)" class="int">1</span>,<span title="java.lang.String(&quot;Name1&quot;)" class="string">&quot;Name1&quot;</span>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35199">g2</a> = <span title="(genre: org.mybatis_scala.model.GenreRecord)org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<a href="#35196" title="org.mybatis_scala.model.GenreRecord">gr1</a>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35200">g3</a> = <span title="(genre: org.mybatis_scala.model.GenreRecord)org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<a href="#35197" title="org.mybatis_scala.model.GenreRecord">gr2</a>)
+		
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">g1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35199" title="org.mybatis_scala.model.Genre">g2</a>
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">g1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35200" title="org.mybatis_scala.model.Genre">g3</a>						
+			
+		}
+	}
+	
+	h3. Book
+	
+	BookRecord is bean-like <span class="keyword">class</span> that represents a record in the BOOK table.
+	Book is immutable <span class="keyword">class</span>. Everybody knows what is the book.
+	
+	Application should &lt;<a title="scala.xml.Elem" id="35292">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of BookRecord&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35307">g1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(1L)" class="int">1</span>, <span title="java.lang.String(&quot;Science Fiction&quot;)" class="string">&quot;Science Fiction&quot;</span>)
+	
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35308">b1</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+			<a href="#35308" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+			<a href="#35308" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+			<a href="#35308" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#35307" title="org.mybatis_scala.model.Genre">g1</a>
+	
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35309">b2</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+			<a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+			<a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+			<a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#35307" title="org.mybatis_scala.model.Genre">g1</a>
+			
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.BookRecord]">b1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>
+			
+			// change book genre
+			<a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(2L)" class="int">2</span>, <span title="java.lang.String(&quot;Love Story&quot;)" class="string">&quot;Love Story&quot;</span>)
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.BookRecord]">b1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35309" title="org.mybatis_scala.model.BookRecord">b2</a>
+			
+		}			
+	}
+	
+	Application should &lt;<a title="scala.xml.Elem" id="35397">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of Book&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35412">g1</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(1L)" class="int">1</span>, <span title="java.lang.String(&quot;Science Fiction&quot;)" class="string">&quot;Science Fiction&quot;</span>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="35413">g2</a> = <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(1L)" class="int">1</span>, <span title="java.lang.String(&quot;Love Store&quot;)" class="string">&quot;Love Store&quot;</span>)
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35414">br1</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+			<a href="#35414" title="org.mybatis_scala.model.BookRecord">br1</a>.<span title="(x$1: Long)Unit">bookId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35414" title="org.mybatis_scala.model.BookRecord">br1</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+			<a href="#35414" title="org.mybatis_scala.model.BookRecord">br1</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+			<a href="#35414" title="org.mybatis_scala.model.BookRecord">br1</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#35412" title="org.mybatis_scala.model.Genre">g1</a>
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35415">br2</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+			<a href="#35415" title="org.mybatis_scala.model.BookRecord">br2</a>.<span title="(x$1: Long)Unit">bookId</span> = <span title="Long(2L)" class="int">2</span>
+			<a href="#35415" title="org.mybatis_scala.model.BookRecord">br2</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+			<a href="#35415" title="org.mybatis_scala.model.BookRecord">br2</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+			<a href="#35415" title="org.mybatis_scala.model.BookRecord">br2</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#35412" title="org.mybatis_scala.model.Genre">g1</a>
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="35416">b1</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book" class="keyword">new</span> <span title="org.mybatis_scala.model.Book">Book</span> (<span title="Long(1L)" class="int">1</span>,<span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>, <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span> , <a href="#35412" title="org.mybatis_scala.model.Genre">g1</a>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="35417">b2</a> = <span title="(br: org.mybatis_scala.model.BookRecord)org.mybatis_scala.model.Book" class="keyword">new</span> <span title="org.mybatis_scala.model.Book">Book</span> (<a href="#35414" title="org.mybatis_scala.model.BookRecord">br1</a>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="35418">b3</a> = <span title="(br: org.mybatis_scala.model.BookRecord)org.mybatis_scala.model.Book" class="keyword">new</span> <span title="org.mybatis_scala.model.Book">Book</span> (<a href="#35415" title="org.mybatis_scala.model.BookRecord">br2</a>)
+			
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Book]">b1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35417" title="org.mybatis_scala.model.Book">b2</a>
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Book]">b2</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35418" title="org.mybatis_scala.model.Book">b3</a>
+		}
+	}
+
+	h3. Author
+	
+	AuthorRecord is bean-like <span class="keyword">class</span> that reprsent a record n the Author table.
+	Author is immutable <span class="keyword">class</span>.
+	Obviously, <span class="keyword">class</span> Author represents the author of the book.
+	
+	Application should &lt;<a title="scala.xml.Elem" id="35516">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of AuthorRecord&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+	
+			<span class="keyword">val</span> <a title="org.joda.time.DateTime" id="35531">curDate</a> = <span title="(x$1: Any)org.joda.time.DateTime" class="keyword">new</span> <span title="org.joda.time.DateTime">DateTime</span>(<span title="java.util.Date" class="keyword">new</span> <span title="java.util.Date">Date</span>())
+	
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35532">b1</a> = <a href="#12667" title="=&gt; org.mybatis_scala.model.BookRecord">predefinedBook1</a>
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35533">b2</a> = <a href="#12667" title="=&gt; org.mybatis_scala.model.BookRecord">predefinedBook1</a>
+		
+			<span class="keyword">val</span> <a title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]" id="35534">bookList1</a> = <span title="()java.util.ArrayList[org.mybatis_scala.model.BookRecord]" class="keyword">new</span> java.util.<span title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">ArrayList</span>[BookRecord]()
+			<a href="#35534" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35532" title="org.mybatis_scala.model.BookRecord">b1</a>)
+			<a href="#35534" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35533" title="org.mybatis_scala.model.BookRecord">b2</a>)
+		
+			<span class="keyword">val</span> <a title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]" id="35535">bookList2</a> = <span title="()java.util.ArrayList[org.mybatis_scala.model.BookRecord]" class="keyword">new</span> java.util.<span title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">ArrayList</span>[BookRecord]()
+			<a href="#35535" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35532" title="org.mybatis_scala.model.BookRecord">b1</a>)
+			<a href="#35535" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35533" title="org.mybatis_scala.model.BookRecord">b2</a>)		
+		
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.AuthorRecord" id="35536">ar1</a> = <span title="org.mybatis_scala.model.AuthorRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.AuthorRecord">AuthorRecord</span> 
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: Long)Unit">authorId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: org.joda.time.DateTime)Unit">birthDay</span> = <a href="#35531" title="org.joda.time.DateTime">curDate</a>
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">firstName</span> = <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">lastName</span> = <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">annotation</span> = <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>
+			<a href="#35536" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: java.util.ArrayList[org.mybatis_scala.model.BookRecord])Unit">books</span> = <a href="#35534" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.AuthorRecord" id="35537">ar2</a> = <span title="org.mybatis_scala.model.AuthorRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.AuthorRecord">AuthorRecord</span> 
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: Long)Unit">authorId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: org.joda.time.DateTime)Unit">birthDay</span> = <a href="#35531" title="org.joda.time.DateTime">curDate</a>
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: String)Unit">firstName</span> = <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: String)Unit">lastName</span> = <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: String)Unit">annotation</span> = <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>
+			<a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>.<span title="(x$1: java.util.ArrayList[org.mybatis_scala.model.BookRecord])Unit">books</span> = <a href="#35535" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>
+
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.AuthorRecord]">ar1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>
+			
+			// remove one book
+			<a href="#35535" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>.<span title="(x$1: Int)org.mybatis_scala.model.BookRecord">remove</span>(<span title="Int(0)" class="int">0</span>)			
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.AuthorRecord]">ar1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35537" title="org.mybatis_scala.model.AuthorRecord">ar2</a>
+			
+		}
+	}
+	
+	Application should &lt;<a title="scala.xml.Elem" id="35960">ex</a>&gt;<span title="scala.xml.Text">allow</span> to create and check equivalence of Author&lt;/ex&gt;
+	{ <a href="#9188" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.joda.time.DateTime" id="35975">curDate</a> = <span title="(x$1: Any)org.joda.time.DateTime" class="keyword">new</span> <span title="org.joda.time.DateTime">DateTime</span>(<span title="java.util.Date" class="keyword">new</span> <span title="java.util.Date">Date</span>())
+		
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35976">b1</a> = <a href="#12667" title="=&gt; org.mybatis_scala.model.BookRecord">predefinedBook1</a>
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="35977">b2</a> = <a href="#12668" title="=&gt; org.mybatis_scala.model.BookRecord">predefinedBook2</a>
+	
+			<span class="keyword">val</span> <a title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]" id="35978">bookList1</a> = <span title="()java.util.ArrayList[org.mybatis_scala.model.BookRecord]" class="keyword">new</span> java.util.<span title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">ArrayList</span>[BookRecord]()
+			<a href="#35978" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35976" title="org.mybatis_scala.model.BookRecord">b1</a>)
+			<a href="#35978" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35977" title="org.mybatis_scala.model.BookRecord">b2</a>)
+	
+			<span class="keyword">val</span> <a title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]" id="35979">bookList2</a> = <span title="()java.util.ArrayList[org.mybatis_scala.model.BookRecord]" class="keyword">new</span> java.util.<span title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">ArrayList</span>[BookRecord]()
+			<a href="#35979" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35976" title="org.mybatis_scala.model.BookRecord">b1</a>)
+			<a href="#35979" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList2</a>.<span title="(x$1: org.mybatis_scala.model.BookRecord)Boolean">add</span> (<a href="#35977" title="org.mybatis_scala.model.BookRecord">b2</a>)		
+	
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.AuthorRecord" id="35980">ar1</a> = <span title="org.mybatis_scala.model.AuthorRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.AuthorRecord">AuthorRecord</span> 
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: Long)Unit">authorId</span> = <span title="Long(1L)" class="int">1</span>
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: org.joda.time.DateTime)Unit">birthDay</span> = <a href="#35975" title="org.joda.time.DateTime">curDate</a>
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">firstName</span> = <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">lastName</span> = <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: String)Unit">annotation</span> = <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>
+			<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>.<span title="(x$1: java.util.ArrayList[org.mybatis_scala.model.BookRecord])Unit">books</span> = <a href="#35978" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>		
+												
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Author" id="35981">a1</a> = <span title="org.mybatis_scala.model.Author" class="keyword">new</span> <span title="org.mybatis_scala.model.Author">Author</span> (<span title="Long(1L)" class="int">1</span>, <a href="#35975" title="org.joda.time.DateTime">curDate</a>, <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>, <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>, <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>, <span title="(xs: org.mybatis_scala.model.Book*)List[org.mybatis_scala.model.Book]">List</span> ( <span title="(bookRecord: org.mybatis_scala.model.BookRecord,authorId: Long)org.mybatis_scala.model.Book">Book</span>(bookRecord = <a href="#35976" title="org.mybatis_scala.model.BookRecord">b1</a>, authorId =<span title="Long(1L)" class="int">1</span>), <span title="(bookRecord: org.mybatis_scala.model.BookRecord,authorId: Long)org.mybatis_scala.model.Book">Book</span> (bookRecord = <a href="#35977" title="org.mybatis_scala.model.BookRecord">b2</a>,authorId = <span title="Long(1L)" class="int">1</span>)))
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Author" id="35982">a2</a> = <span title="(a: org.mybatis_scala.model.AuthorRecord)org.mybatis_scala.model.Author" class="keyword">new</span> <span title="org.mybatis_scala.model.Author">Author</span> (<a href="#35980" title="org.mybatis_scala.model.AuthorRecord">ar1</a>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Author" id="35983">a3</a> = <span title="org.mybatis_scala.model.Author" class="keyword">new</span> <span title="org.mybatis_scala.model.Author">Author</span> (<span title="Long(1L)" class="int">1</span>, <a href="#35975" title="org.joda.time.DateTime">curDate</a>.<span title="(x$1: Int)org.joda.time.DateTime">minusYears</span>(<span title="Int(100)" class="int">100</span>), <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>, <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>, <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>, <span title="(xs: org.mybatis_scala.model.Book*)List[org.mybatis_scala.model.Book]">List</span> (<span title="(bookRecord: org.mybatis_scala.model.BookRecord,authorId: Long)org.mybatis_scala.model.Book">Book</span>(bookRecord = <a href="#35976" title="org.mybatis_scala.model.BookRecord">b1</a>, authorId = <span title="Long(1L)" class="int">1</span>),  <span title="(bookRecord: org.mybatis_scala.model.BookRecord,authorId: Long)org.mybatis_scala.model.Book">Book</span> (bookRecord = <a href="#35977" title="org.mybatis_scala.model.BookRecord">b2</a>,authorId = <span title="Long(1L)" class="int">1</span>)))
+
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;Author equivalence bookList1: &quot;</span>+<a href="#35978" title="java.util.ArrayList[org.mybatis_scala.model.BookRecord]">bookList1</a>)
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;Author equivalence a1: &quot;</span>+<a href="#35981" title="org.mybatis_scala.model.Author">a1</a>)
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;Author equivalence a2: &quot;</span>+<a href="#35982" title="org.mybatis_scala.model.Author">a2</a>)
+			<a href="#9188" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;Author equivalence a3: &quot;</span>+<a href="#35983" title="org.mybatis_scala.model.Author">a3</a>)
+						
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Author]">a1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#35982" title="org.mybatis_scala.model.Author">a2</a>
+			<a href="#9188" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Author]">a1</a> <a href="#9188" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#35983" title="org.mybatis_scala.model.Author">a3</a>
+			
+		}
+	}
+
+	&lt;/t&gt;
+	
+	/**
+	* Set of predifened object aimed to reduce code
+	*/
+	<span class="keyword">def</span> <a title="=&gt; org.mybatis_scala.model.Genre" id="12665">predefinedGenre1</a> : <span title="org.mybatis_scala.model.Genre">Genre</span> =  <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(1L)" class="int">1</span>, <span title="java.lang.String(&quot;Science Fiction&quot;)" class="string">&quot;Science Fiction&quot;</span>)
+	<span class="keyword">def</span> <a title="=&gt; org.mybatis_scala.model.Genre" id="12666">predefinedGenre2</a> : <span title="org.mybatis_scala.model.Genre">Genre</span> =  <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="Long(2L)" class="int">2</span>, <span title="java.lang.String(&quot;Love Story&quot;)" class="string">&quot;Love Story&quot;</span>)
+
+	<span class="keyword">def</span> <a title="=&gt; org.mybatis_scala.model.BookRecord" id="12667">predefinedBook1</a> : <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> = {
+		<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="36299">g1</a> = <a href="#12665" title="=&gt; org.mybatis_scala.model.Genre">predefinedGenre1</a>
+
+		<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="36300">b1</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+		<a href="#36300" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: Long)Unit">bookId</span> = <span title="Long(1L)" class="int">1</span>
+		<a href="#36300" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+		<a href="#36300" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+		<a href="#36300" title="org.mybatis_scala.model.BookRecord">b1</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#36299" title="org.mybatis_scala.model.Genre">g1</a>
+		<a href="#36300" title="org.mybatis_scala.model.BookRecord">b1</a>		
+	}
+	
+	<span class="keyword">def</span> <a title="=&gt; org.mybatis_scala.model.BookRecord" id="12668">predefinedBook2</a> : <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> = {
+		<span class="keyword">val</span> <a title="org.mybatis_scala.model.Genre" id="36306">g2</a> = <a href="#12666" title="=&gt; org.mybatis_scala.model.Genre">predefinedGenre2</a>
+
+		<span class="keyword">val</span> <a title="org.mybatis_scala.model.BookRecord" id="36307">b2</a> = <span title="org.mybatis_scala.model.BookRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.BookRecord">BookRecord</span> 
+		<a href="#36307" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: Long)Unit">bookId</span> = <span title="Long(2L)" class="int">2</span>
+		<a href="#36307" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: String)Unit">title</span> = <span title="java.lang.String(&quot;Title1&quot;)" class="string">&quot;Title1&quot;</span>
+		<a href="#36307" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: String)Unit">isbn</span> = <span title="java.lang.String(&quot;isbn1&quot;)" class="string">&quot;isbn1&quot;</span>
+		<a href="#36307" title="org.mybatis_scala.model.BookRecord">b2</a>.<span title="(x$1: org.mybatis_scala.model.Genre)Unit">genre</span> = <a href="#36306" title="org.mybatis_scala.model.Genre">g2</a>
+		<a href="#36307" title="org.mybatis_scala.model.BookRecord">b2</a>		
+	}	
+}
+
+
+
+        </pre>
+    </body>
+</html>

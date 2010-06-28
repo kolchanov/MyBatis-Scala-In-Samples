@@ -3,6 +3,7 @@ digraph ModelUml {
 	fontname  = "Courier"
 
 
+
 	node [ 
 		fontname  = "Courier"
 		shape = "record"
@@ -18,33 +19,74 @@ digraph ModelUml {
 			label = "Package org.mybatis_scala.model"		
 			labeljust = "l"
 		
+
 			subgraph cluster2 {
 			
 				style = "invis"
-				Genre [
-					label = "{\<\<Immutable\>\>\nGenre| + val genreId: Long\l+ val name: String\l|+ Genre(Long,String)\l+ this()\l+ this(GenreRecord)\l+ toString: String\l+ equals(Any): Boolean\l }"
+				
+				Book [
+					label = "{\<\<Immutable\>\>\nBook| |}"
+				]
+				AbstractBook [
+					label = "{\<\<Trait\>\>\nAbstractBook|  |}"
 				]
 
-
-				Author [
-					label = "{\<\<Immutable\>\>\nAuthor|+ val authorId: Long\l+ val birthDay: org.joda.time.DateTime\l+ val firstName: String\l+ val lastName: String\l+ val annotation: String\l |+ Author(Long, org.joda.time.DateTime,String,String,String,List[Book])\l+ this(AuthorRecord)\l+ toString: String\l+ equals(Any): Boolean\l}"
-				]				
-				
-			}
-
-			Book [
-				label = "{\<\<Immutable\>\>\nBook| + val bookId: Long\l+ val title: String\l+ val isbn: String\l+ val genre: Genre\l+ val authorId: Option[Long]\l|+ Book(Long,String,String,Genre,Option[Long])\l+ this(Long,String,String,Genre)\l+ this(BookRecord)\l+ toString: String\l+ equals(Any): Boolean\l+ \< (Book): Boolean\l }"
-			]
-
+				BookRecord [
+					label = "{\<\<Mutable\>\>\nBookRecord| |}"
+				]					
+		  }
 		
-		}
+			subgraph cluster3 {
+			
+				style = "invis"
+				
+				Genre [
+					label = "{\<\<Immutable\>\>\nGenre| |}"
+				]
+				AbstractGenre [
+					label = "{\<\<Trait\>\>\nAbstractGenre|  |}"
+				]
+
+				GenreRecord [
+					label = "{\<\<Mutable\>\>\nGenreRecord| | }"
+				]			
+			}
+			
+			subgraph cluster3 {
+			
+				style = "invis"
+				
+				Author [
+					label = "{\<\<Immutable\>\>\nAuthor| |}"
+				]		
+
+				AbstractAuthor [
+					label = "{\<\<Trait\>\>\nAbstractAuthor|  | }"
+				]	
+
+				AuthorRecord [
+					label = "{\<\<Mutable\>\>\nAuthorRecord| |}"
+				]				
+			
+			}		
+			}
+			
+
 	
+	
+			BookRecord -> AbstractBook	
+			Book -> AbstractBook
+			
+			AuthorRecord -> AbstractAuthor
+			Author -> AbstractAuthor
 
-
-
+			GenreRecord -> AbstractGenre
+			Genre -> AbstractGenre
+			
+			
 
 		Book -> Genre [arrowhead = "odiamond", taillabel="0..1", headlabel="1..1", labeldistance = 2.5, minlen = 3]
 		Author -> Book [arrowhead = "diamond", taillabel="1..1", headlabel="0..n", labeldistance = 2.5, minlen = 3]  
-		
+
 
 }

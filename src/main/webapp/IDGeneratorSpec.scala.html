@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>IDGeneratorSpec.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.samples
+
+<span class="keyword">import</span> org.mybatis_scala.util.{LogHelper,Schema}
+<span class="keyword">import</span> org.specs.{HtmlSpecification,Specification}
+<span class="keyword">import</span> org.specs.literate.Textile
+
+<span class="keyword">import</span> org.mybatis_scala.service.generator._
+<span class="keyword">import</span> naive._
+<span class="keyword">import</span> h2db._
+
+
+<span class="keyword">class</span> <a title="class IDGeneratorSpec extends org.specs.HtmlSpecification with org.specs.literate.Textile with org.mybatis_scala.util.LogHelper with ScalaObject" id="9178">IDGeneratorSpec</a> <span title="ScalaObject" class="keyword">extends</span> <span title="org.specs.HtmlSpecification">HtmlSpecification</span> <span class="keyword">with</span> <span title="org.specs.literate.Textile">Textile</span> <span class="keyword">with</span> <span title="org.mybatis_scala.util.LogHelper">LogHelper</span> {
+	
+	<span class="keyword">val</span> <a title="java.sql.Connection" id="19315">connection</a> = <span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="=&gt; java.sql.Connection">conn</span>
+	
+	//* number of id iteration in this test
+	<span class="keyword">val</span> <a title="Int" id="19317">idTextCount</a> = <span title="Int(20)" class="int">20</span>
+	
+	<a href="#9178" title="(actions: =&gt; Any)Option[Unit]">doFirst</a> {
+		// Initilize database schema
+		<span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="()Unit">init</span>()		
+	}
+	
+	<a href="#9178" title="(e: =&gt; scala.xml.Elem)Any" class="string">&quot;IDGeneratorSpec spec&quot;</a> is &lt;<a title="scala.xml.Elem" id="34464">t</a>&gt;
+	
+	h2. Problem description
+	
+	I suppose that generating domain model <span class="keyword">object</span> identificator during database insert is a realy bad idea.
+	Let<span class="symbol">'s</span> check test and sequence based ID generator implementations <span class="keyword">for</span> test and production environments.
+	BTW, there is the first time when MyBatis is executed - MyBatis helps to get info from database system table.
+	
+	Application should &lt;<a title="scala.xml.Elem" id="34468">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Genre entity in the test envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a>{
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34483">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.naive.GenreNaiveIdGenerator">GenreNaiveIdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34483" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)		
+		}
+	}
+	
+	Application should &lt;<a title="scala.xml.Elem" id="34498">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Book entity in the test envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34513">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.naive.BookNaiveIdGenerator">BookNaiveIdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34513" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)		
+		}
+	}	
+
+	Application should &lt;<a title="scala.xml.Elem" id="34522">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Author entity in the test envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a> {
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34537">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.naive.AuthorNaiveIdGenerator">AuthorNaiveIdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34537" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)		
+		}
+	}	
+
+	Application should &lt;<a title="scala.xml.Elem" id="34546">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Genre entity in the production envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a> {
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34561">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34561" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)
+		}
+	}
+
+	Application should &lt;<a title="scala.xml.Elem" id="34569">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Book entity in the production envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a> {
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34584">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34584" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)
+		}
+	}
+
+	Application should &lt;<a title="scala.xml.Elem" id="34592">ex</a>&gt;<span title="scala.xml.Text">allow</span> to generate incremeted id <span class="keyword">for</span> Author entity in the production envirenment&lt;/ex&gt; 
+	{ <a href="#9178" title="(test: =&gt; Any)Unit">eg</a> {
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.service.generator.IDGenerator" id="34607">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span> = <span title="object org.mybatis_scala.service.generator.h2db.AuthorH2IdGenerator">AuthorH2IdGenerator</span>
+			<a href="#19319" title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit">checkGenerator</a> (<a href="#34607" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>)
+		}
+	}	
+	&lt;/t&gt;
+	
+	<span class="keyword">def</span> <a title="(generator: org.mybatis_scala.service.generator.IDGenerator)Unit" id="19319">checkGenerator</a> (<a title="org.mybatis_scala.service.generator.IDGenerator" id="34489">generator</a> : <span title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</span>) {
+		<span class="keyword">val</span> <a title="Long" id="34617">id1</a> = <a href="#34489" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>.<span title="=&gt; Long">nextVal</span>
+		<span class="keyword">val</span> <a title="Long" id="34618">id2</a> = <a href="#34489" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>.<span title="=&gt; Long">nextVal</span>
+
+		<a href="#9178" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;id1: &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#34617" title="Long">id1</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot; id2: &quot;)" class="string">&quot; id2: &quot;</span>+<a href="#34618" title="Long">id2</a>)
+		<a href="#9178" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Long]">id1</a> <a href="#9178" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#34618" title="Long">id2</a>	
+
+		<span class="keyword">var</span> <a title="Long" id="34619">prev</a> = <a href="#34618" title="Long">id2</a>
+	
+		<span class="keyword">for</span> (<a title="Int" id="35010">i</a>&lt;- <span title="(end: Int)scala.collection.immutable.Range.Inclusive with scala.collection.immutable.Range.ByOne" class="int">1</span> <span title="(f: (Int) =&gt; Unit)Unit">to</span> <a href="#19317" title="=&gt; Int">idTextCount</a>) {
+			<span class="keyword">var</span> <a title="Long" id="35011">nxt</a> = <a href="#34489" title="org.mybatis_scala.service.generator.IDGenerator">generator</a>.<span title="=&gt; Long">nextVal</span>
+
+			<a href="#9178" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;next id for &quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#34489" title="org.mybatis_scala.service.generator.IDGenerator">generator</a><span title="(x$1: Any)java.lang.String">+</span><span title="java.lang.String(&quot;: &quot;)" class="string">&quot;: &quot;</span>+<a href="#35011" title="Long">nxt</a>)
+
+			<a href="#9178" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Long]">nxt</a> <a href="#9178" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#34619" title="Long">prev</a>
+			<a href="#34619" title="Long">prev</a> = <a href="#35011" title="Long">nxt</a>
+		}		
+	}
+}
+
+
+
+
+        </pre>
+    </body>
+</html>

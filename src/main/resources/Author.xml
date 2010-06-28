@@ -22,8 +22,7 @@
 	<delete id="deleteAuthor" parameterType="Author"> 
 			DELETE AUTHOR WHERE AUTHOR_ID = #{authorId}
 	</delete>
-	
-	<!-- column="AUTHOR_ID" -->
+
 	
 	<resultMap id="authorResult" type="AuthorRecord">
 		<id property="authorId" column="AUTHOR_ID"/> 

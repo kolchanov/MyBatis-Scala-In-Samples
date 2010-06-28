@@ -1,0 +1,26 @@
+digraph GenreUml {
+	fontname  = "Courier"
+
+
+
+
+	node [ 
+		fontname  = "Courier"
+		shape = "record"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]	
+
+	subgraph clusterGenre {
+		label = "Package org.mybatis_scala.service.mybatis"		
+		labeljust = "l"
+	
+		MyBatisDaoService [
+			label = "{\<\<Trait\>\>\nMyBatisDaoService|  | + getSequenceIncremet (String): Int\l+ getGenreSequenceNextVal: Long\l+ getBookSequenceNextVal: Long\l+ getAuthorSequenceNextVal: Long\l\l+ getGenreCount: Int\l+ saveGenre (Genre): Unit\l+ loadGenreById (Long): Option[Genre]\l+ loadGenreByName (String): List[Genre]\l+ loadGenreRecordById (Long): Option[GenreRecord]\l+ updateGenre (Genre): Unit\l+ deleteGenre (Genre): Unit\l\l+ getBookCount: Int\l+ saveBook (Book): Unit\l+ loadBookById (Long): Option[BookRecord]\l+ lazyLoadBookByTitle (String): List[BookRecord]\l+ lazyLoadBookByAuthor (Long): List[BookRecord]\l+ updateBook (Book): Unit\l+ deleteBook (Book): Unit\l\l+ getAuthorCount: Int\l+ saveAuthorRecord (AuthorRecord): Unit\l+ saveAuthor (Author): Unit\l+ loadAuthorById (Long): Option[AuthorRecord]\l+ lazyLoadAuthorByFirstName (String): List[AuthorRecord]\l+ updateAuthor (Author): Unit\l+ deleteCascadeAuthor (Author): Unit\l+ deleteAuthor (Author): Unit\l}"
+		]
+
+
+	}
+}

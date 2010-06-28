@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>H2IdGenerator.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.service.generator.h2db
+
+<span class="keyword">import</span> org.mybatis_scala.ApplicationContext
+<span class="keyword">import</span> org.mybatis_scala.service.generator.IDGenerator
+<span class="keyword">import</span> org.mybatis_scala.service.mybatis.MyBatisDaoService
+<span class="keyword">import</span> java.util.concurrent.atomic.AtomicLong
+<span class="keyword">import</span> org.mybatis_scala.util.LogHelper
+
+/**
+* Generator that uses h2 database sequence
+*/
+<span class="keyword">trait</span> <a title="trait H2IdGenerator extends java.lang.Object with org.mybatis_scala.service.generator.IDGenerator with org.mybatis_scala.util.LogHelper with ScalaObject" id="9170">H2IdGenerator</a> <span title="ScalaObject" class="keyword">extends</span> <a href="IDGenerator.scala.html#9159" title="org.mybatis_scala.service.generator.IDGenerator">IDGenerator</a>  <span class="keyword">with</span> <a href="LogHelper.scala.html#9228" title="org.mybatis_scala.util.LogHelper">LogHelper</a> {
+	//* interval before call sequence NextVal	
+	<span class="keyword">var</span> <a title="java.util.concurrent.atomic.AtomicLong" id="21169">generator</a> = <span title="java.util.concurrent.atomic.AtomicLong" class="keyword">new</span> <span title="java.util.concurrent.atomic.AtomicLong">AtomicLong</span> (<span title="Long(0L)" class="int">0</span>)
+	
+	//* Abstract method to get next val from sequence
+	<span class="keyword">def</span> <a title="=&gt; Long" id="21171">getSequenceNextVal</a> : <span title="Long">Long</span>
+	
+	//* Abstract method for sequence name
+	<span class="keyword">def</span> <a title="=&gt; String" id="21172">sequenceName</a> : <span title="String">String</span>
+
+	<span class="keyword">var</span> <a title="Int" id="21174">pool</a> : <span title="Int">Int</span> = <span title="Int(0)" class="int">0</span>
+	<span class="keyword">val</span> <a title="org.mybatis_scala.service.mybatis.MyBatisDaoService" id="21176">myBatisService</a> = <a href="ApplicationContext.scala.html#9120" title="object org.mybatis_scala.ApplicationContext">ApplicationContext</a>.<a href="ApplicationContext.scala.html#9243" title="=&gt; org.mybatis_scala.service.mybatis.MyBatisDaoService">getMyBatisService</a>
+
+	<span class="keyword">var</span> <a title="Int" id="21179">sequenceIncrement</a>  = <a href="#21181" title="()Int">getIncrement</a>() 
+	
+	<span class="keyword">def</span> <a title="()Int" id="21181">getIncrement</a>() : <span title="Int">Int</span> = {
+		<a href="#21176" title="=&gt; org.mybatis_scala.service.mybatis.MyBatisDaoService">myBatisService</a>.<a href="MyBatisService.scala.html#13843" title="(name: String)Int">getSequenceIncremet</a> (<a href="#21172" title="=&gt; String">sequenceName</a>)
+	}
+	
+	<span class="keyword">def</span> <a title="=&gt; Long" id="21182">nextVal</a> : <span title="Long">Long</span> = {
+		<span title="Unit" class="keyword">if</span> ( <a href="#21174" title="(x$1: Int)Boolean">pool</a> == <span title="Int(0)" class="int">0</span>) {
+			<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;identificator pool is empty&quot;)" class="string">&quot;identificator pool is empty&quot;</span>)
+			<span class="keyword">val</span> <a title="Long" id="21246">nv</a> = <a href="#21171" title="=&gt; Long">getSequenceNextVal</a>
+			<a href="LogHelper.scala.html#14717" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;sequence nextval is: &quot;</span>+<a href="#21246" title="Long">nv</a>)
+			<a href="#21174" title="(x$1: Int)Unit">pool</a> = <a href="#21179" title="=&gt; Int">sequenceIncrement</a> 
+			<a href="#21169" title="(x$1: java.util.concurrent.atomic.AtomicLong)Unit">generator</a> = <span title="java.util.concurrent.atomic.AtomicLong" class="keyword">new</span> <span title="java.util.concurrent.atomic.AtomicLong">AtomicLong</span> (<a href="#21246" title="(x$1: Int)Long">nv</a> - <span title="Int(1)" class="int">1</span>)
+		}
+			<a href="#21174" title="(x$1: Int)Unit">pool</a> = <a href="#21174" title="(x$1: Int)Int">pool</a> - <span title="Int(1)" class="int">1</span>
+			<a href="#21169" title="=&gt; java.util.concurrent.atomic.AtomicLong">generator</a>.<span title="(x$1: Long)Long">addAndGet</span>(<span title="Long(1L)" class="int">1</span>)
+	}
+}
+
+<span class="keyword">object</span> <a title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator" id="9171">GenreH2IdGenerator</a> <span title="ScalaObject" class="keyword">extends</span> <a href="#9170" title="org.mybatis_scala.service.generator.h2db.H2IdGenerator">H2IdGenerator</a> {	
+	<span class="keyword">def</span> <a title="=&gt; String" id="21451">sequenceName</a> : <span title="String">String</span> = <span title="java.lang.String(&quot;GENRE_SEQUENCE&quot;)" class="string">&quot;GENRE_SEQUENCE&quot;</span>	
+	<span class="keyword">def</span> <a title="=&gt; Long" id="21452">getSequenceNextVal</a> = <a href="#21176" title="=&gt; org.mybatis_scala.service.mybatis.MyBatisDaoService">myBatisService</a>.<a href="MyBatisService.scala.html#13844" title="=&gt; Long">getGenreSequenceNextVal</a>	
+}
+
+<span class="keyword">object</span> <a title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator" id="9173">BookH2IdGenerator</a> <span title="ScalaObject" class="keyword">extends</span> <a href="#9170" title="org.mybatis_scala.service.generator.h2db.H2IdGenerator">H2IdGenerator</a> {	
+	<span class="keyword">def</span> <a title="=&gt; String" id="21461">sequenceName</a> : <span title="String">String</span> = <span title="java.lang.String(&quot;BOOK_SEQUENCE&quot;)" class="string">&quot;BOOK_SEQUENCE&quot;</span>	
+	<span class="keyword">def</span> <a title="=&gt; Long" id="21462">getSequenceNextVal</a> = <a href="#21176" title="=&gt; org.mybatis_scala.service.mybatis.MyBatisDaoService">myBatisService</a>.<a href="MyBatisService.scala.html#13845" title="=&gt; Long">getBookSequenceNextVal</a>	
+}
+
+<span class="keyword">object</span> <a title="object org.mybatis_scala.service.generator.h2db.AuthorH2IdGenerator" id="9175">AuthorH2IdGenerator</a> <span title="ScalaObject" class="keyword">extends</span> <a href="#9170" title="org.mybatis_scala.service.generator.h2db.H2IdGenerator">H2IdGenerator</a> {	
+	<span class="keyword">def</span> <a title="=&gt; String" id="21471">sequenceName</a> : <span title="String">String</span> = <span title="java.lang.String(&quot;AUTHOR_SEQUENCE&quot;)" class="string">&quot;AUTHOR_SEQUENCE&quot;</span>	
+	<span class="keyword">def</span> <a title="=&gt; Long" id="21472">getSequenceNextVal</a> = <a href="#21176" title="=&gt; org.mybatis_scala.service.mybatis.MyBatisDaoService">myBatisService</a>.<a href="MyBatisService.scala.html#13846" title="=&gt; Long">getAuthorSequenceNextVal</a>	
+}
+        </pre>
+    </body>
+</html>

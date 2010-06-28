@@ -3,15 +3,13 @@ import BasicScalaProject._
 import java.io.File
 
 
-class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) {
+class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) with AutoCompilerPlugins {
 
+	val sxr = compilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.5")
 
-
-	// val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
 	val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots"
 	
 	val mybatis = "org.mybatis" % "mybatis" % "3.0.1" 
-	// val Mybatis = "org.mybatis" % "mybatis" % "3.0.2-SNAPSHOT" from "https://oss.sonatype.org/content/repositories/snapshots"
 	val H2 = "com.h2database" % "h2" % "1.1.117" 
 	val Cglib = "cglib" % "cglib" % "2.2" 
 	val JodaTime = "joda-time" % "joda-time" % "1.6" 
@@ -26,17 +24,12 @@ class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) {
 
 	lazy val graphViz = task {
 		val src = "src/main/graphviz/"
-		val dst = "src/main/resources/"
+		val dst = "src/main/webapp/images/"
 		
 		def run(cmd : String*) = if (Runtime.getRuntime().exec(cmd.toArray[String]).waitFor() != 0) throw new Exception("Execution failed")
-		// dot -T png -o src/main/resources/ModelUml.png src/main/graphviz/ModelUml.dot
 		val dotFiles = new File (src).listFiles().toList.filter (f => f.getName().endsWith("dot")).map(f => f.getName()).map (f => f.substring(0,(f.length()-3).toInt))
 		
 		dotFiles.foreach (f => run("dot","-T","png","-o", dst+f+"png",src+f+"dot"))
-		
-		// run("dot","-T","png","-o","src/main/resources/ModelUml.png","src/main/graphviz/ModelUml.dot")
-		
-		// FileUtilities.copy ( Set[Path](Path.fromFile(source)), Path.fromFile(dest), true, log)
 		None
 	}
 

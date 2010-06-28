@@ -1,0 +1,36 @@
+[BookCRUDSpec.scala]
+ 19427 term org.mybatis_scala.samples.BookCRUDSpec.author(71de6b524d8fd8e283033c80fcceddc9e041539d)
+ 19423 term org.mybatis_scala.samples.BookCRUDSpec.connection
+ 19425 term org.mybatis_scala.samples.BookCRUDSpec.genreArray
+ 9157 type org.mybatis_scala.samples.BookCRUDSpec
+ 19425 term org.mybatis_scala.samples.BookCRUDSpec.genreArray(51065ecfce5440021bf4db5257c19f9ce780c698)
+ 19427 term org.mybatis_scala.samples.BookCRUDSpec.author
+ 19423 term org.mybatis_scala.samples.BookCRUDSpec.connection(1e1baef9f4bae39ef30c78bf04a2ecf6c1e083ce)
+[GenreCRUDSpec.scala]
+ 9168 type org.mybatis_scala.samples.GenreCRUDSpec
+ 19417 term org.mybatis_scala.samples.GenreCRUDSpec.connection
+ 19417 term org.mybatis_scala.samples.GenreCRUDSpec.connection(1e1baef9f4bae39ef30c78bf04a2ecf6c1e083ce)
+[AuthorCRUDSpec.scala]
+ 19433 term org.mybatis_scala.samples.AuthorCRUDSpec.connection
+ 9145 type org.mybatis_scala.samples.AuthorCRUDSpec
+ 19433 term org.mybatis_scala.samples.AuthorCRUDSpec.connection(1e1baef9f4bae39ef30c78bf04a2ecf6c1e083ce)
+ 19435 term org.mybatis_scala.samples.AuthorCRUDSpec.genreArray
+ 19437 term org.mybatis_scala.samples.AuthorCRUDSpec.bookList(883ce198250fef2b89d200463e227a3c690bc9a2)
+ 19435 term org.mybatis_scala.samples.AuthorCRUDSpec.genreArray(436d1efb9675455c4571e1ab541a3cec48c3ffb4)
+[AppTest.scala]
+ 9132 type org.mybatis_scala.samples.AppTest
+ 9465 term org.mybatis_scala.samples.AppTest.printSpecs(daa10c302f01ae891ab5ff7d9d7f177c59c78afc)
+ 9464 term org.mybatis_scala.samples.AppTest.testOk(daa10c302f01ae891ab5ff7d9d7f177c59c78afc)
+[IDGeneratorSpec.scala]
+ 9178 type org.mybatis_scala.samples.IDGeneratorSpec
+ 19319 term org.mybatis_scala.samples.IDGeneratorSpec.checkGenerator(e616da8cef197a880427881f18350d2db062a097)
+ 19315 term org.mybatis_scala.samples.IDGeneratorSpec.connection(1e1baef9f4bae39ef30c78bf04a2ecf6c1e083ce)
+ 19315 term org.mybatis_scala.samples.IDGeneratorSpec.connection
+ 19317 term org.mybatis_scala.samples.IDGeneratorSpec.idTextCount(f94e34279774a33b0e784d726d315f41bbfccb90)
+ 19317 term org.mybatis_scala.samples.IDGeneratorSpec.idTextCount
+[ModelSpec.scala]
+ 12667 term org.mybatis_scala.samples.ModelSpec.predefinedBook1(4a1c646876e84e549091d187ec9cfdae87bd1284)
+ 9188 type org.mybatis_scala.samples.ModelSpec
+ 12668 term org.mybatis_scala.samples.ModelSpec.predefinedBook2(4a1c646876e84e549091d187ec9cfdae87bd1284)
+ 12666 term org.mybatis_scala.samples.ModelSpec.predefinedGenre2(b38cd691b8f3ab54430e48a3d4a998ce2e47e938)
+ 12665 term org.mybatis_scala.samples.ModelSpec.predefinedGenre1(b38cd691b8f3ab54430e48a3d4a998ce2e47e938)

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>HashBuilder.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.util
+
+<span class="keyword">import</span> java.lang.reflect.{Array =&gt; JArray}
+<span class="keyword">import</span> java.lang.{Float =&gt; JFloat, Double =&gt; JDouble}
+
+/**
+* Scala Hash Builder &lt;p/&gt; 
+* Thanks for jboner http://gist.github.com/939
+*/
+<span class="keyword">object</span> <a title="object org.mybatis_scala.util.HashBuilder" id="9221">HashBuilder</a> <span title="ScalaObject">{</span>
+	<span class="keyword">val</span> <a title="Int" id="25612">SEED</a> = <span title="Int(23)" class="int">23</span>
+
+	<span class="keyword">def</span> <a title="(seed: Int,value: Boolean)Int" id="25614">hash</a>(<a title="Int" id="25627">seed</a>: <span title="Int">Int</span>, <a title="Boolean" id="25628">value</a>: <span title="Boolean">Boolean</span>): <span title="Int">Int</span> = <a href="#25621" title="(seed: Int)Int">firstTerm</a><span title="(x$1: Int)Int">(</span><a href="#25627" title="Int">seed</a>) + (<span title="Int" class="keyword">if</span> (<a href="#25628" title="Boolean">value</a>) <span title="Int(1)" class="int">1</span> <span class="keyword">else</span> <span title="Int(0)" class="int">0</span>)
+	<span class="keyword">def</span> <a title="(seed: Int,value: Char)Int" id="25615">hash</a>(<a title="Int" id="25639">seed</a>: <span title="Int">Int</span>, <a title="Char" id="25640">value</a>: <span title="Char">Char</span>): <span title="Int">Int</span> = <a href="#25621" title="(seed: Int)Int">firstTerm</a><span title="(x$1: Int)Int">(</span><a href="#25639" title="Int">seed</a>) + <a href="#25640" title="Char">value</a>.<span title="[T0]T0">asInstanceOf</span><span title="Int">[</span><span title="Int">Int</span>]
+	<span class="keyword">def</span> <a title="(seed: Int,value: Int)Int" id="25616">hash</a>(<a title="Int" id="25648">seed</a>: <span title="Int">Int</span>, <a title="Int" id="25649">value</a>: <span title="Int">Int</span>): <span title="Int">Int</span> = <a href="#25621" title="(seed: Int)Int">firstTerm</a><span title="(x$1: Int)Int">(</span><a href="#25648" title="Int">seed</a>) + <a href="#25649" title="Int">value</a>
+	<span class="keyword">def</span> <a title="(seed: Int,value: Long)Int" id="25617">hash</a>(<a title="Int" id="25657">seed</a>: <span title="Int">Int</span>, <a title="Long" id="25658">value</a>: <span title="Long">Long</span>): <span title="Int">Int</span> = <a href="#25621" title="(seed: Int)Int">firstTerm</a><span title="(x$1: Int)Int">(</span><a href="#25657" title="Int">seed</a>) + (<a href="#25658" title="(x$1: Long)Long">value</a> ^ (<a href="#25658" title="(x$1: Int)Long">value</a> &gt;&gt;&gt; <span title="Int(32)" class="int">32</span>) ).<span title="[T0]T0">asInstanceOf</span><span title="Int">[</span><span title="Int">Int</span>]
+	<span class="keyword">def</span> <a title="(seed: Int,value: Float)Int" id="25618">hash</a>(<a title="Int" id="25676">seed</a>: <span title="Int">Int</span>, <a title="Float" id="25677">value</a>: <span title="Float">Float</span>): <span title="Int">Int</span> = <a href="#25616" title="(seed: Int,value: Int)Int">hash</a>(<a href="#25676" title="Int">seed</a>, <span title="object java.lang.Float">JFloat</span>.<span title="(x$1: Float)Int">floatToIntBits</span>(<a href="#25677" title="Float">value</a>))
+	<span class="keyword">def</span> <a title="(seed: Int,value: Double)Int" id="25619">hash</a>(<a title="Int" id="25685">seed</a>: <span title="Int">Int</span>, <a title="Double" id="25686">value</a>: <span title="Double">Double</span>): <span title="Int">Int</span> = <a href="#25617" title="(seed: Int,value: Long)Int">hash</a>(<a href="#25685" title="Int">seed</a>, <span title="object java.lang.Double">JDouble</span>.<span title="(x$1: Double)Long">doubleToLongBits</span>(<a href="#25686" title="Double">value</a>))
+	<span class="keyword">def</span> <a title="(seed: Int,anyRef: AnyRef)Int" id="25620">hash</a>(<a title="Int" id="25682">seed</a>: <span title="Int">Int</span>, <a title="AnyRef" id="25683">anyRef</a>: <span title="AnyRef">AnyRef</span>): <span title="Int">Int</span> = {
+	  <span class="keyword">var</span> <a title="Int" id="25699">result</a> = <a href="#25682" title="Int">seed</a>
+	  <span title="Unit" class="keyword">if</span> (<a href="#25683" title="(x$1: AnyRef)Boolean">anyRef</a> == <span title="Null(null)" class="keyword">null</span>) <a href="#25699" title="Int">result</a> = <a href="#25616" title="(seed: Int,value: Int)Int">hash</a>(<a href="#25699" title="Int">result</a>, <span title="Int(0)" class="int">0</span>)
+	  <span class="keyword">else</span> <span title="Unit" class="keyword">if</span> (<span title="=&gt; Boolean">!</span><a href="#25622" title="(anyRef: AnyRef)Boolean">isArray</a>(<a href="#25683" title="AnyRef">anyRef</a>)) <a href="#25699" title="Int">result</a> = <a href="#25616" title="(seed: Int,value: Int)Int">hash</a>(<a href="#25699" title="Int">result</a>, <a href="#25683" title="AnyRef">anyRef</a>.<span title="()Int">hashCode</span>())
+	  <span class="keyword">else</span> { // is an array
+	    <span class="keyword">for</span> (<a title="Int" id="26262">id</a> &lt;- <span title="(end: Int)scala.collection.immutable.Range with scala.collection.immutable.Range.ByOne" class="int">0</span> <span title="(f: (Int) =&gt; Unit)Unit">until</span> <span title="object java.lang.reflect.Array">JArray</span>.<span title="(x$1: Any)Int">getLength</span>(<a href="#25683" title="AnyRef">anyRef</a>)) {
+	      <span class="keyword">val</span> <a title="java.lang.Object" id="26263">item</a> = <span title="object java.lang.reflect.Array">JArray</span>.<span title="(x$1: Any,x$2: Int)java.lang.Object">get</span>(<a href="#25683" title="AnyRef">anyRef</a>, <a href="#26262" title="Int">id</a>)
+	      <a href="#25699" title="Int">result</a> = <a href="#25620" title="(seed: Int,anyRef: AnyRef)Int">hash</a>(<a href="#25699" title="Int">result</a>, <a href="#26263" title="java.lang.Object">item</a>)
+	    }
+	  }
+	  <a href="#25699" title="Int">result</a>
+	}
+	<span class="keyword">private</span> <span class="keyword">def</span> <a title="(seed: Int)Int" id="25621">firstTerm</a>(<a title="Int" id="25630">seed</a>: <span title="Int">Int</span>): <span title="Int">Int</span> = <a href="#25623" title="(x$1: Int)Int">PRIME</a> * <a href="#25630" title="Int">seed</a>
+	<span class="keyword">private</span> <span class="keyword">def</span> <a title="(anyRef: AnyRef)Boolean" id="25622">isArray</a>(<a title="AnyRef" id="25711">anyRef</a>: <span title="AnyRef">AnyRef</span>): <span title="Boolean">Boolean</span> = <a href="#25711" title="AnyRef">anyRef</a>.<span title="()java.lang.Class[_]">getClass</span>.<span title="()Boolean">isArray</span>
+	<span class="keyword">private</span> <span class="keyword">val</span> <a title="Int" id="25623">PRIME</a> = <span title="Int(37)" class="int">37</span>	
+}
+
+
+        </pre>
+    </body>
+</html>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>BookCRUDSpec.scala</title>
+        <script type="text/javascript" src="jquery-all.js"></script>
+        <script type="text/javascript" src="linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> org.mybatis_scala.samples
+
+<span class="keyword">import</span> org.mybatis_scala.util.{LogHelper,Schema}
+<span class="keyword">import</span> org.specs.{HtmlSpecification,Specification}
+<span class="keyword">import</span> org.specs.literate.Textile
+<span class="keyword">import</span> org.joda.time.DateTime
+
+<span class="keyword">import</span> org.mybatis_scala.model._
+<span class="keyword">import</span> org.mybatis_scala.service.mybatis._
+<span class="keyword">import</span> org.mybatis_scala.service.generator._
+<span class="keyword">import</span> h2db._
+
+
+<span class="keyword">class</span> <a title="class BookCRUDSpec extends org.specs.HtmlSpecification with org.specs.literate.Textile with org.mybatis_scala.util.LogHelper with ScalaObject" id="9157">BookCRUDSpec</a> <span title="ScalaObject" class="keyword">extends</span> <span title="org.specs.HtmlSpecification">HtmlSpecification</span> <span class="keyword">with</span> <span title="org.specs.literate.Textile">Textile</span> <span class="keyword">with</span> <span title="org.mybatis_scala.util.LogHelper">LogHelper</span> {
+	
+	<span class="keyword">val</span> <a title="java.sql.Connection" id="19423">connection</a> = <span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="=&gt; java.sql.Connection">conn</span>
+	<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Genre]" id="19425">genreArray</a> = <span title="(xs: org.mybatis_scala.model.Genre*)List[org.mybatis_scala.model.Genre]">List</span> (<span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Science Fiction&quot;)" class="string">&quot;Science Fiction&quot;</span>), <span title="org.mybatis_scala.model.Genre" class="keyword">new</span> <span title="org.mybatis_scala.model.Genre">Genre</span> (<span title="object org.mybatis_scala.service.generator.h2db.GenreH2IdGenerator">GenreH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>,<span title="java.lang.String(&quot;Love Story&quot;)" class="string">&quot;Love Story&quot;</span>))
+	<a href="#19425" title="=&gt; List[org.mybatis_scala.model.Genre]">genreArray</a>.<span title="(f: (org.mybatis_scala.model.Genre) =&gt; Unit)Unit">foreach</span> (<a title="org.mybatis_scala.model.Genre" id="32029">g</a>=&gt;<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(genre: org.mybatis_scala.model.Genre)Unit">saveGenre</span>(<a href="#32029" title="org.mybatis_scala.model.Genre">g</a>))	
+	<span class="keyword">val</span> <a title="org.mybatis_scala.model.AuthorRecord" id="19427">author</a> = <span title="org.mybatis_scala.model.AuthorRecord" class="keyword">new</span> <span title="org.mybatis_scala.model.AuthorRecord">AuthorRecord</span>()
+	<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>.<span title="(x$1: Long)Unit">authorId</span> = <span title="object org.mybatis_scala.service.generator.h2db.AuthorH2IdGenerator">AuthorH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>
+	<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>.<span title="(x$1: org.joda.time.DateTime)Unit">birthDay</span> = <span title="org.joda.time.DateTime" class="keyword">new</span> <span title="org.joda.time.DateTime">DateTime</span>()
+	<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>.<span title="(x$1: String)Unit">firstName</span> = <span title="java.lang.String(&quot;firstName&quot;)" class="string">&quot;firstName&quot;</span>
+	<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>.<span title="(x$1: String)Unit">lastName</span> =  <span title="java.lang.String(&quot;lastName&quot;)" class="string">&quot;lastName&quot;</span>
+	<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>.<span title="(x$1: String)Unit">annotation</span> = <span title="java.lang.String(&quot;annotation&quot;)" class="string">&quot;annotation&quot;</span>	
+	<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(author: org.mybatis_scala.model.AuthorRecord)Unit">saveAuthorRecord</span> (<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>)
+	
+	<a href="#9157" title="(actions: =&gt; Any)Option[Unit]">doFirst</a> {
+		// Initilize database schema
+		<span title="object org.mybatis_scala.util.Schema">Schema</span>.<span title="()Unit">init</span>()						
+	}	
+	
+	<a href="#9157" title="(e: =&gt; scala.xml.Elem)Any" class="string">&quot;BookCRUDSpec spec&quot;</a> is &lt;<a title="scala.xml.Elem" id="32056">textile</a>&gt;
+	
+	h2. CRUD operations <span class="keyword">for</span> Book <span class="keyword">object</span>
+	
+	Book <span class="keyword">object</span> has associated <span class="keyword">object</span> Genre so <span class="keyword">this</span> spec covered CRUD operations and operations <span class="keyword">with</span> associated <span class="keyword">object</span>.
+	Also, Book table has a nullable column AUTHOR_ID and Book <span class="keyword">class</span> has Option[Long] property.
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32060">ex</a>&gt; implement Create (save) method <span class="keyword">for</span> Book <span class="keyword">class</span> without optional Author&lt;/ex&gt;{
+		 <a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {			
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;Book save without Author&quot;)" class="string">&quot;Book save without Author&quot;</span>)			
+			<span class="keyword">val</span> <a title="Int" id="32073">count1</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getBookCount</span>
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32074">book</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;Title&quot;)" class="string">&quot;Title&quot;</span> , <span title="java.lang.String(&quot;ISBN&quot;)" class="string">&quot;ISBN&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>))
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span> (<a href="#32074" title="org.mybatis_scala.model.Book">book</a>)
+			
+			<span class="keyword">val</span> <a title="Int" id="32075">count2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getBookCount</span>
+			<span title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">(</span><a href="#32075" title="(x$1: Int)Int">count2</a> <a href="#9157" title="(value: =&gt; Int)org.specs.specification.Expectation[Int]">-</a> <a href="#32073" title="Int">count1</a>) <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="Int(1)" class="int">1</span>			
+		}
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32141">ex</a>&gt; implement Create (save) method <span class="keyword">for</span> Book <span class="keyword">class</span> <span class="keyword">with</span> optional Author&lt;/ex&gt;{
+		 <a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {			
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;Book save with Author&quot;)" class="string">&quot;Book save with Author&quot;</span>)			
+			<span class="keyword">val</span> <a title="Int" id="32154">count1</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getBookCount</span>
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32155">book</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre,author: org.mybatis_scala.model.Author)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;Title&quot;)" class="string">&quot;Title&quot;</span> , <span title="java.lang.String(&quot;ISBN&quot;)" class="string">&quot;ISBN&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>), <span title="(a: org.mybatis_scala.model.AuthorRecord)org.mybatis_scala.model.Author">Author</span>(<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>))
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span> (<a href="#32155" title="org.mybatis_scala.model.Book">book</a>)
+			
+			<span class="keyword">val</span> <a title="Int" id="32156">count2</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getBookCount</span>
+			<span title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">(</span><a href="#32156" title="(x$1: Int)Int">count2</a> <a href="#9157" title="(value: =&gt; Int)org.specs.specification.Expectation[Int]">-</a> <a href="#32154" title="Int">count1</a>) <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="Int(1)" class="int">1</span>			
+		}
+	}
+
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32225">ex</a>&gt; implement Read method <span class="keyword">for</span> Book <span class="keyword">class</span> without optional Author&lt;/ex&gt;{
+		<a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;Book read without Author&quot;)" class="string">&quot;Book read without Author&quot;</span>)	
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32238">book1</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book" class="keyword">new</span> <span title="org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;Title&quot;)" class="string">&quot;Title&quot;</span> , <span title="java.lang.String(&quot;ISBN&quot;)" class="string">&quot;ISBN&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>))
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span> (<a href="#32238" title="org.mybatis_scala.model.Book">book1</a>)		
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Book]" id="32239">book2</a> : <span title="Option[org.mybatis_scala.model.Book]">Option</span>[Book] = <span title="object org.mybatis_scala.model.Book">Book</span>.<span title="(bookRecord: Option[org.mybatis_scala.model.BookRecord])Option[org.mybatis_scala.model.Book]">bookOption</span> (<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.BookRecord]">loadBookById</span> (<a href="#32238" title="org.mybatis_scala.model.Book">book1</a>.<span title="=&gt; Long">bookId</span>))
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;book1: &quot;</span>+<a href="#32238" title="org.mybatis_scala.model.Book">book1</a>)
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;book2: &quot;</span>+<a href="#32239" title="Option[org.mybatis_scala.model.Book]">book2</a>)
+			
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Book]]">book2</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_!=</a> <span title="object None">None</span>
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Book]]">book2</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="(x: org.mybatis_scala.model.Book)Some[org.mybatis_scala.model.Book]">Some</span>(<a href="#32238" title="org.mybatis_scala.model.Book">book1</a>)
+		}
+	}
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32339">ex</a>&gt; implement Read method <span class="keyword">for</span> Book <span class="keyword">class</span> <span class="keyword">with</span> optional Author&lt;/ex&gt;{
+		<a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="java.lang.String(&quot;Book read with Author&quot;)" class="string">&quot;Book read with Author&quot;</span>)				
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32352">book1</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre,author: org.mybatis_scala.model.Author)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;Title&quot;)" class="string">&quot;Title&quot;</span> , <span title="java.lang.String(&quot;ISBN&quot;)" class="string">&quot;ISBN&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>), <span title="(a: org.mybatis_scala.model.AuthorRecord)org.mybatis_scala.model.Author">Author</span>(<a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>))
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span> (<a href="#32352" title="org.mybatis_scala.model.Book">book1</a>)		
+			
+			<span class="keyword">val</span> <a title="Option[org.mybatis_scala.model.Book]" id="32353">book2</a> : <span title="Option[org.mybatis_scala.model.Book]">Option</span>[Book] = <span title="object org.mybatis_scala.model.Book">Book</span>.<span title="(bookRecord: Option[org.mybatis_scala.model.BookRecord],author: org.mybatis_scala.model.AuthorRecord)Option[org.mybatis_scala.model.Book]">bookOption</span> (<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.BookRecord]">loadBookById</span> (<a href="#32352" title="org.mybatis_scala.model.Book">book1</a>.<span title="=&gt; Long">bookId</span>), <a href="#19427" title="=&gt; org.mybatis_scala.model.AuthorRecord">author</a>)
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;book1: &quot;</span>+<a href="#32352" title="org.mybatis_scala.model.Book">book1</a>)
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;book2: &quot;</span>+<a href="#32353" title="Option[org.mybatis_scala.model.Book]">book2</a>)
+			
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Book]]">book2</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_!=</a> <span title="object None">None</span>
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Option[org.mybatis_scala.model.Book]]">book2</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <span title="(x: org.mybatis_scala.model.Book)Some[org.mybatis_scala.model.Book]">Some</span>(<a href="#32352" title="org.mybatis_scala.model.Book">book1</a>)
+		}
+	}
+	
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32464">ex</a>&gt; implement <span class="keyword">lazy</span> Read method <span class="keyword">for</span> Book <span class="keyword">class</span>&lt;/ex&gt;{
+		<a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {
+			
+			// prepare a book list and save this one
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.Book]" id="32477">bookList</a> = <span title="(xs: org.mybatis_scala.model.Book*)List[org.mybatis_scala.model.Book]">List</span> (
+				<span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;UTTL1&quot;)" class="string">&quot;UTTL1&quot;</span> , <span title="java.lang.String(&quot;ISBN1&quot;)" class="string">&quot;ISBN1&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>)), 
+				<span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;UTTL2&quot;)" class="string">&quot;UTTL2&quot;</span> , <span title="java.lang.String(&quot;ISBN2&quot;)" class="string">&quot;ISBN2&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(1)" class="int">1</span>)),
+				<span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;UTTL3&quot;)" class="string">&quot;UTTL3&quot;</span> , <span title="java.lang.String(&quot;ISBN3&quot;)" class="string">&quot;ISBN3&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(1)" class="int">1</span>)), 
+				<span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;UTTL4&quot;)" class="string">&quot;UTTL4&quot;</span> , <span title="java.lang.String(&quot;ISBN4&quot;)" class="string">&quot;ISBN4&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>)))
+			<a href="#32477" title="List[org.mybatis_scala.model.Book]">bookList</a>.<span title="(f: (org.mybatis_scala.model.Book) =&gt; Unit)Unit">foreach</span> (<a title="org.mybatis_scala.model.Book" id="32563">b</a> =&gt; <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span>(<a href="#32563" title="org.mybatis_scala.model.Book">b</a>))
+			
+			
+			// load all boooks with title like UTTL% and check that lazy loaded genre is correct
+			<span class="keyword">val</span> <a title="List[org.mybatis_scala.model.BookRecord]" id="32478">resList</a> : <span title="List[org.mybatis_scala.model.BookRecord]">List</span>[BookRecord] = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(title: String)List[org.mybatis_scala.model.BookRecord]">lazyLoadBookByTitle</span> (<span title="java.lang.String(&quot;UTTL%&quot;)" class="string">&quot;UTTL%&quot;</span>)
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32479">book</a> = <span title="(bookRecord: org.mybatis_scala.model.BookRecord)org.mybatis_scala.model.Book">Book</span>(<a href="#32478" title="List[org.mybatis_scala.model.BookRecord]">resList</a>.<span title="=&gt; org.mybatis_scala.model.BookRecord">head</span>)
+
+			
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;lazy read genre: &quot;</span>+<a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>))
+			<a href="#9157" title="(msg: =&gt; String)Unit">lzDebug</a> (<span title="(x$1: Any)java.lang.String" class="string">&quot;lazy read book: &quot;</span> +<a href="#32479" title="org.mybatis_scala.model.Book">book</a>)
+			
+			<a href="#32479" title="org.mybatis_scala.model.Book">book</a>.<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Genre]">genre</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>)			
+		}
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32634">ex</a>&gt; implement Update method <span class="keyword">for</span> Book <span class="keyword">class</span>&lt;/ex&gt;{
+		<a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {			
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32647">book1</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;TTL1&quot;)" class="string">&quot;TTL1&quot;</span> , <span title="java.lang.String(&quot;ISBN1&quot;)" class="string">&quot;ISBN1&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>)) 
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span>(<a href="#32647" title="org.mybatis_scala.model.Book">book1</a>)
+			
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32648">book2</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<a href="#32647" title="org.mybatis_scala.model.Book">book1</a>.<span title="=&gt; Long">bookId</span>, <span title="java.lang.String(&quot;TTL2&quot;)" class="string">&quot;TTL2&quot;</span> , <span title="java.lang.String(&quot;ISBN2&quot;)" class="string">&quot;ISBN2&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(1)" class="int">1</span>)) 
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">updateBook</span>(<a href="#32648" title="org.mybatis_scala.model.Book">book2</a>)
+			
+			// get updated book by id
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32649">book3</a> = <span title="(bookRecord: org.mybatis_scala.model.BookRecord)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(id: Long)Option[org.mybatis_scala.model.BookRecord]">loadBookById</span> (<a href="#32647" title="org.mybatis_scala.model.Book">book1</a>.<span title="=&gt; Long">bookId</span>).<span title="=&gt; org.mybatis_scala.model.BookRecord">get</span>)
+			
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Book]">book1</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_!=</a> <a href="#32649" title="org.mybatis_scala.model.Book">book3</a>
+			<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[org.mybatis_scala.model.Book]">book2</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#32649" title="org.mybatis_scala.model.Book">book3</a>
+			
+		}
+	}
+
+	DAO <span class="keyword">object</span> should &lt;<a title="scala.xml.Elem" id="32762">ex</a>&gt; implement Delete method <span class="keyword">for</span> Book <span class="keyword">class</span>&lt;/ex&gt;{
+		<a href="#9157" title="(test: =&gt; Any)Unit">eg</a> {
+
+			<span class="keyword">val</span> <a title="org.mybatis_scala.model.Book" id="32775">book</a> = <span title="(bookId: Long,title: String,isbn: String,genre: org.mybatis_scala.model.Genre)org.mybatis_scala.model.Book">Book</span> (<span title="object org.mybatis_scala.service.generator.h2db.BookH2IdGenerator">BookH2IdGenerator</span>.<span title="=&gt; Long">nextVal</span>, <span title="java.lang.String(&quot;TTL&quot;)" class="string">&quot;TTL&quot;</span> , <span title="java.lang.String(&quot;ISBN&quot;)" class="string">&quot;ISBN&quot;</span>, <a href="#19425" title="(n: Int)org.mybatis_scala.model.Genre">genreArray</a>(<span title="Int(0)" class="int">0</span>)) 
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">saveBook</span> (<a href="#32775" title="org.mybatis_scala.model.Book">book</a>)
+
+
+			<span class="keyword">val</span> <a title="Int" id="32776">count</a> = <span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="=&gt; Int">getBookCount</span>
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<span title="(book: org.mybatis_scala.model.Book)Unit">deleteBook</span> (<a href="#32775" title="org.mybatis_scala.model.Book">book</a>)
+			
+			<span title="object org.mybatis_scala.service.mybatis.MyBatisDaoService">MyBatisDaoService</span>.<a href="#9157" title="(otherValue: Any)(implicit details: org.specs.specification.Detailed)org.specs.specification.Result[Int]">getBookCount</a> <a href="#9157" title="=&gt; org.specs.specification.Detailed">must_==</a> <a href="#32776" title="(x$1: Int)Int">count</a> -<span title="Int(1)" class="int">1</span>
+			
+		}
+	}
+	
+	&lt;/textile&gt;
+}
+
+
+
+        </pre>
+    </body>
+</html>
