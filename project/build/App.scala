@@ -5,7 +5,7 @@ import java.io.File
 
 class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) with AutoCompilerPlugins {
 
-	val sxr = compilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.5")
+	val sxr = compilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.6")
 
 	val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots"
 	
@@ -19,7 +19,7 @@ class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) with A
 	val Junit = "junit" % "junit" % "4.4" 	
 	val Wikitext = "org.eclipse.mylyn.wikitext" % "wikitext" % "0.9.4.I20090220-1600-e3x" 
 	val Wikitext_textile = "org.eclipse.mylyn.wikitext" % "wikitext.textile" % "0.9.4.I20090220-1600-e3x"
-	val specs = "org.scala-tools.testing" % "specs_2.8.0.RC6" % "1.6.5-SNAPSHOT" 
+	val specs = "org.scala-tools.testing" % "specs_2.8.0" % "1.6.5" 
 
 
 	lazy val graphViz = task {
@@ -39,12 +39,6 @@ class MybatisScalaProject(info: ProjectInfo) extends DefaultProject(info) with A
 		FileUtilities.copy ( Set[Path](Path.fromFile(source)), Path.fromFile(dest), true, log)
 		None
 	}
-	// 
-	// 
-	// lazy val print = task { log.info("This is a test."); None }
-	// 
-	// override def compileAction = super.compileAction dependsOn(copyIndex)
-	// override def testAction = super.testAction 
 	
 	
 }
